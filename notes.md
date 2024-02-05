@@ -12,3 +12,4 @@ Websocket: Bidirectional communication, chat option
 1. Just creating a list shouldn't really do anything but I believe the CSS part will make the list able to be added to 
 2. Login Button should take to main page, did this by adding link to the button (there could be an easier or more efficient way to do this, come back and check)
 3. Making the playlist page is weird, feels too simple? Not sure if the "add song" feature should be included along with it or in a separate page; was still able to make the playlist just a list of songs, along with the artist and album name included as additional info
+4. Searching Feature will eventually search through a database of available songs on spotify
