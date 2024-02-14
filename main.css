@@ -1,0 +1,17 @@
+body {
+    display: flex;
+    flex-direction: column;
+    min-width: 375px;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  header {
+    flex: 0 80px;
+    padding: 20px;
+  }
+
+  .username {
+    color: rgb(0, 0, 0);
+    
+  }
