@@ -24,7 +24,7 @@ Have you ever been about to go on a roadtrip with your friends, and you just fin
 I am going to use the required technologies in the following ways.
 
 - **HTML** - Uses correct HTML structure for application. Three HTML pages. One for login, one for voting, one for looking at and generating playlist. Hyperlinks to choice artifact.
-- **CSS** - Application styling that looks good on different screen sizes, uses good whitespace, color choice and contrast.
+- **CSS** - Application styling that looks good on different screen sizes, uses good whitespace, color choice and contrast. - **Mostly done, will update later to add stuff that needs javascript to work**
 - **JavaScript** - Provides login, allows users to propose new songs, applying votes, display other users votes, see users playlists, backend endpoint calls.
 - **Service** - Backend service with endpoints for:
   - login
