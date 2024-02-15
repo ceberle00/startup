@@ -1,0 +1,26 @@
+.buttons {
+    justify-content: space-evenly !important;
+    display: flex;
+    border-radius: 10px;
+    border-color: rgb(1, 28, 1) !important;
+    color: rgb(179, 239, 183) !important;
+
+}
+body {
+    background-color: gray !important;
+}
+
+.h1, h1 {
+    text-align: center;
+}
+.voting {
+    text-align: center;
+    border-color: black;
+    background-color: rgb(138, 194, 114);
+    border: 15px solid rgb(1, 28, 1); /* Set border width, style, and color */
+    border-radius: 10px;
+    height: 100;
+}
+.submit {
+    text-align: center;
+}

@@ -1,19 +1,38 @@
 <!DOCTYPE html>
 <html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="voting.css" />
+        <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+            integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi"
+            crossorigin="anonymous"
+        />
+    </head>
     <body>
-        <button type="button"><a href="mainpage.html">Home</a></button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <button type="button"> <a href="playlist.html">Playlists</a></button>
-         <p> Should the song (song Name) by (artist name) be added to the playlist (playlist name)?</p>
+        <div class = "buttons">
+            <button type="button"><a href="mainpage.html">Home</a></button>
+            <button type="button"> <a href="playlist.html">Playlists</a></button>
+        </div>
+        <br>
+        <br>
+        <br>
+         <h1> <b>Should the song (song Name) by (artist name) be added to the playlist (playlist name)?</b></h1>
 
-         
-        <fieldset>
-            <legend>Voting!</legend>
-            <label for="Yes">Yes</label>
-            <input type="radio" id="Yes" name="varRadio" value="Yes" checked />
-            <label for="No">No</label>
-            <input type="radio" id="No" name="varRadio" value="No" />
-            <label for="Don't care">Don't care</label>
-            <input type="radio" id="Don't care" name="varRadio" value="Don't care" />
-        </fieldset> 
-        <button type="submit"><a href = "mainpage.html"> Submit </a> </button>
+        <div class = "voting">
+            <fieldset>
+                <legend>Voting!</legend>
+                <label for="Yes">Yes</label>
+                <input type="radio" id="Yes" name="varRadio" value="Yes" checked />
+                <label for="No">No</label>
+                <input type="radio" id="No" name="varRadio" value="No" />
+                <label for="Don't care">Don't care</label>
+                <input type="radio" id="Don't care" name="varRadio" value="Don't care" />
+            </fieldset> 
+        </div> 
+        <div class = "submit">
+            <button type="submit"><a href = "mainpage.html"> Submit </a> </button>
+        </div>
     </body>   
 </html>
