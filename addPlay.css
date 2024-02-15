@@ -1,0 +1,25 @@
+.buttons {
+    justify-content: space-evenly !important;
+    display: flex;
+    border-radius: 10px;
+    border-color: rgb(1, 28, 1) !important;
+}
+body {
+    background-color: gray !important;
+}
+
+.h2, h2 {
+    text-align: center;
+    color: white;
+}
+.PlaylistTitle{
+    text-align: center;
+}
+
+.lastButton {
+    border-collapse: separate; 
+    overflow: hidden;
+    border-radius: 25px !important;
+    text-align: center;
+    color: rgb(179, 239, 183);
+}
