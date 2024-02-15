@@ -1,0 +1,22 @@
+.buttons {
+    justify-content: space-evenly !important;
+    display: flex;
+    border-radius: 10px;
+    border-color: rgb(1, 28, 1) !important;
+    color: rgb(179, 239, 183) !important;
+
+}
+body {
+    background-color: rgb(179, 239, 183) !important;
+}
+.h2, h2 {
+    text-align: center;
+    color:rgb(1, 28, 1)
+}
+.songs {
+    text-align: center;
+    background-color: white;
+    border: 15px solid rgb(138, 194, 114); /* Set border width, style, and color */
+    border-radius: 10px;
+    height: 100;
+}

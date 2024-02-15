@@ -1,0 +1,28 @@
+.buttons {
+    justify-content: space-evenly !important;
+    display: flex;
+    border-radius: 10px;
+    border-color: rgb(1, 28, 1) !important;
+    color: rgb(179, 239, 183) !important;
+
+}
+body {
+    background-color: rgb(179, 239, 183) !important;
+}
+.h1, h1 
+{
+    text-align: center;
+    color:rgb(1, 28, 1)
+}
+
+.search {
+    text-align: center;
+}
+
+.h3, h3 {
+    text-align: center;
+}
+
+.select {
+    text-align: center;
+}

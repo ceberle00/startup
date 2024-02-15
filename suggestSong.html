@@ -1,24 +1,43 @@
 <!DOCTYPE html>
 <html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="suggestSong.css" />
+        <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+            integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi"
+            crossorigin="anonymous"
+        />
+    </head>
     <body>
-        <button type="button"><a href="mainpage.html">Home</a></button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <button type="button"><a href="playlist.html"> Back to Playlists</a></button>
-        <h4> Suggest Song For Playlist </h4>
-        <ul>
-            <li>
-                <label for="search"> Find Song: </label>
-                <input type="search" id="search" name="varSearch" />
-            </li>
+        <div class = "buttons">
+            <button type="button"><a href="mainpage.html">Home</a></button>
+            <button type="button"><a href="playlist.html"> Back to Playlists</a></button>
+        </div>
+        <br>
+        <br>
+        <h1> Suggest Song For Playlist </h1>
+        <br>
+        <div class = "search">
+            <label for="search"> Find Song: </label>
+            <input type="search" id="search" name="varSearch" />
+        </div>
             <br>
-            <p> Which playlist would you like to add this song to?</p> <br>
-            <li>
-                <label for="select">Playlist: </label>
-                <select id="select" name="Playlist Selected">
-                <option selected>Playlist 1</option>
-                <option>Playlist 2</option>
-                <option>Playlist 3</option>
-                </select>
-            </li>
-            <button type="submit"><a href = "voting.html"> Submit </a> </button>
+            <h3> Which playlist would you like to add this song to?</p> </h3>
+            
+        <div class = "select">
+            <label for="select"></label>
+            <select id="select" name="Playlist Selected">
+            <option selected>Playlist 1</option>
+            <option>Playlist 2</option>
+            <option>Playlist 3</option>
+            </select> 
+            <br>
+            <br>
+            <br>
+            <button type="submit"><a href = "voting.html"> Move to Voting </a> </button>
+        </div>
         </ul>
     </body>
 

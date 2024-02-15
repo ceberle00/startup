@@ -3,6 +3,7 @@
     display: flex;
     border-radius: 10px;
     border-color: rgb(1, 28, 1) !important;
+    color: rgb(179, 239, 183);
 }
 body {
     background-color: gray !important;
@@ -17,9 +18,12 @@ body {
 }
 
 .lastButton {
-    border-collapse: separate; 
+    justify-content: space-evenly !important;
+    display: flex;
+    border-radius: 10px;
+    border-color: rgb(1, 28, 1) !important; 
     overflow: hidden;
-    border-radius: 25px !important;
+    border-radius: 10px !important;
     text-align: center;
     color: rgb(179, 239, 183);
 }
