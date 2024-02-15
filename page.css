@@ -1,15 +1,11 @@
 .buttons {
-    justify-content: space-between !important;
+    justify-content: space-evenly !important;
     display: flex;
     border-radius: 10px;
     border-color: rgb(1, 28, 1) !important;
 }
-.friends {
-    border-radius: 10px;
-    border-style: solid;
-    border-color: rgb(7, 58, 7) !important;
-}
-.playlist {
+
+.friends, .playlist {
     border-radius: 10px;
     border-style: solid;
     border-color: rgb(7, 58, 7) !important;
@@ -20,30 +16,43 @@ body {
 }
 
 .main {
-    width:100%; 
-	height:100vh; 
-}
-.cloud {
-    float: left;
-    background-color: white;
-    border: 15px solid rgb(138, 194, 114); /* Set border width, style, and color */
-    padding: 20px; /* Optional: Add padding inside the box */
-    width: 50%;
-    border-radius: 10px;
-    height: 250px;
-}
-.right {
-    float: right; 
-    width: 50%;
-}
-.h2, h2 {
-    flex: 50%;
-    text-align: center;
+    width: 100%; 
+    height: 100vh; 
+    display: flex;
+    flex-direction: column; 
 }
 
-.h1, h1 {
-    flex: 50%;
+.cloud {
+    background-color: white;
+    border: 15px solid rgb(138, 194, 114); 
+    padding: 20px; 
+    border-radius: 10px;
+    height: 162px;
     text-align: left;
+}
+
+.right {
+    width: 100%; 
+    display: flex;
+    justify-content: center; 
+}
+ol {
+    height: 200px;
+    width: 50%;
+    background: rgb(41, 118, 41);
+    padding: 20px;
+}
+  
+ol li {
+    background: rgb(169, 230, 169);
+    color: black;
+    padding: 20px;
+    height: 50px;
+    margin: 25px;
+}
+
+h1, h2 {
+    text-align: center; /* Center align the headers */
 }
 
 .testing {
