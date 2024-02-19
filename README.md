@@ -34,3 +34,15 @@ I am going to use the required technologies in the following ways.
 - **DB/Login** - Store users, votes, and playlists in database. Register and login users. Credentials securely stored in database. Can't vote unless authenticated and a friend of the user.
 - **WebSocket** - See the results of votes in real time and being able to see the playlist change in real time, also obtains info for all songs available on Spotify
 - **React** - Application ported to use the React web framework.
+
+## HTML Deliverable:
+
+For this deliverable I built out the structure of my application using HTML.
+
+- HTML pages - Seven HTML page, including the login page, the home, the page for creating a playlist, voting on songs, the song voting results, and a page for adding friends
+- Links - The login page automatically links to the main page. The main page links to the page that has your already created playlists, where to add friends, and how to create new playlists. On these pages there are links to suggesting a new song and a link to the page for voting on the song
+- Text - There's a value description of the app on the home page, and voting has a text saying what song they're voting to add to what playlist
+- Images - I mainly just included the spotify logo, but I might get rid of that because idk copyright law
+- DB/Login - Input box and submit button for login. The voting choices are data submitted by the users
+- WebSocket - The count of voting results represent the tally of realtime votes, and maybe they will take song info from a list of available songs on spotify
+
