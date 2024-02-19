@@ -46,3 +46,13 @@ For this deliverable I built out the structure of my application using HTML.
 - DB/Login - Input box and submit button for login. The voting choices are data submitted by the users
 - WebSocket - The count of voting results represent the tally of realtime votes, and maybe they will take song info from a list of available songs on spotify
 
+## CSS Deliverable:
+
+For this deliverable I properly styled the application into its final appearance.
+
+Header, footer, and main content body
+Made the background color consisent and hopefully it doesn't clash
+Navigation elements - I dropped the underlines and changed the color for anchor elements.
+Application elements - Used good contrast and whitespace, tried to put the buttons all in the same place and make the buttons stand out
+Application text content - Consistent font
+Application images - Made them surround the title
