@@ -50,9 +50,10 @@ For this deliverable I built out the structure of my application using HTML.
 
 For this deliverable I properly styled the application into its final appearance.
 
-Header, footer, and main content body
-Made the background color consisent and hopefully it doesn't clash
-Navigation elements - I dropped the underlines and changed the color for anchor elements.
-Application elements - Used good contrast and whitespace, tried to put the buttons all in the same place and make the buttons stand out
-Application text content - Consistent font
-Application images - Made them surround the title
+- Header, footer, and main content body
+- Made the background color consisent and hopefully it doesn't clash
+- Navigation elements - I tried to make all the buttons similar colors and shapes, although it's still a bit obvious it's a link
+- Responsive to window resizing - sort of? Some of the parts work as they're supposed to but others will take more time to get right
+- Application elements - Used good contrast and whitespace, tried to put the buttons all in the same place and make the buttons stand out
+- Application text content - Consistent font
+- Application images - Made them surround the title
