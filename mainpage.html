@@ -1,6 +1,11 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <script>
+            window.onload = function() {
+              addToList();
+            };
+        </script>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="page.css" />
         <link
@@ -10,8 +15,9 @@
             crossorigin="anonymous"
         />
         <script src="mainpage.js"></script>
+        <script src="index.js"></script>
     </head>
-    <body>
+    <body onload = "addToList()">
         <br>
         <div class = "buttons">
             <button class = "friends"><a href = "friends.html">Friends </a></button>
@@ -33,7 +39,6 @@
             <h2> Your Playlists: </h2>
             <div class = "right">
                 <ol id = "playlistNames">
-                <li> <a href="playlist.html">Playlist</a></li>
                 <li> <button onclick="AddPlay()"> Add Playlist </button></li>
                 </ol>
             </div>

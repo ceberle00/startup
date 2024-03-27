@@ -8,6 +8,7 @@
             integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi"
             crossorigin="anonymous"
         />
+        <script src="index.js"></script>
     </head>
     <body>
         <div class = "buttons">
@@ -22,12 +23,10 @@
         <br>
         <br>
             <div class = "PlaylistTitle">
-                <label for="Playlist Title"> <b></b> </label>
-                <input type="text" placeholder="Playlist Title" id="Playlist Title">
-            </div>
-            <br>
-            <div class = "lastButton">
-                <button type="submit"><a href = "playlist.html"> Create </a> </button>
+                <label for="playlistTitle"> <b></b> </label>
+                <input type="text" placeholder="Playlist Title" id="playlistTitle">
+                <br>
+                <button class = "btn btn-primary" onclick = "getTitle()"> Create </button>
             </div>
     </body>
 

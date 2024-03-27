@@ -1,7 +1,7 @@
 //might just do everything in here lol
 
-const playlists = new Map()
-
+const playlists = new Map();
+const playNames = [];
 function login() 
 {
   const userpass= document.querySelectorAll("#text-box"); 
@@ -12,14 +12,27 @@ function login()
     */ 
   window.location.href = "mainpage.html";
 }
-function addToList(value) //changes the visual list part
+function addToList() 
 {
-  //think this should be good, for the actual playlists we'll make a map
-  const listItem = document.createElement('li');
-  listItem.textContent = value;
-  const myList = document.getElementById('playlistNames');
-  myList.appendChild(listItem);
-  createPlaylist(value);
+  var myList = document.getElementById('playlistNames');
+  var playlistTitles = JSON.parse(localStorage.getItem("PlaylistTitles")) || [];
+  
+  playlistTitles.forEach(function(title) {
+    var listItem = document.createElement('li');
+    var titleNode = document.createTextNode(title);
+    listItem.appendChild(titleNode);
+    myList.appendChild(listItem.cloneNode(true));
+  });
+  //listItem.appendChild(document.createTextNode(localStorage.getItem("PlaylistTitle")));
+  //myList.appendChild(listItem);
+}
+function getTitle() //changes the visual list part
+{
+  const value = document.getElementById('playlistTitle').value;
+  var playlistTitles = JSON.parse(localStorage.getItem("PlaylistTitles")) || [];
+  playlistTitles.push(value);
+  localStorage.setItem("PlaylistTitles", JSON.stringify(playlistTitles));
+  window.location.href = "mainpage.html";
 }
 function createPlaylist(value) 
 {
