@@ -5,6 +5,7 @@ body {
     flex-direction: column;
     justify-content: space-around;
     align-items: center;
+    height: auto;
   }
 
   .h1, h1 {
@@ -22,10 +23,10 @@ body {
 
   .text-box {
     background-color: white;
-    border: 15px solid rgb(138, 194, 114); /* Set border width, style, and color */
+    border: 15px solid rgb(103, 176, 117); /* Set border width, style, and color */
     padding: 20px; /* Optional: Add padding inside the box */
     border-radius: 10px;
-    height: 200px;
+    height: auto;
   }
 
   header {
@@ -49,6 +50,7 @@ body {
     background-color: rgb(103, 176, 117);
     justify-content: space-evenly !important;
     font-size: small;
+    height: auto !important;
   }
 
   img {
@@ -56,4 +58,10 @@ body {
     height: 50px;
   }
 
-  
+  .button {
+    padding: 10px;
+    text-align: center;
+    border:rgb(0, 0, 0);
+    background-color: rgb(103, 176, 117);
+    justify-content: space-evenly !important;
+  }

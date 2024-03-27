@@ -35,26 +35,35 @@ body {
     width: 100%; 
     display: flex;
     justify-content: center; 
+    height: auto;
 }
 ol {
     border-radius: 10px;
     border-style: solid;
     border-color: black;
-    height: 200px;
+    height: auto;
     width: 50%;
     background: rgb(41, 118, 41);
     padding: 20px;
+    justify-content: center;
+    align-items: center;
 }
-  
+
 ol li {
     border-radius: 10px;
     border-style: solid;
     border-color: black;
     background: rgb(169, 230, 169);
     color: black;
-    padding: 20px;
+    padding: 30px;
     height: 50px;
     margin: 25px;
+}
+button {
+    text-align: center;
+    justify-content: space-evenly !important;
+    background: rgb(169, 230, 169);
+    border-style: hidden
 }
 
 h1, h2 {
