@@ -1,6 +1,11 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <script>
+            window.onload = function() {
+                fillPlaylists();
+            };
+        </script>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="suggestSong.css" />
         <link
@@ -9,6 +14,8 @@
             integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi"
             crossorigin="anonymous"
         />
+        <script src="index.js"></script>
+
     </head>
     <body>
         <div class = "buttons">
@@ -29,9 +36,6 @@
         <div class = "select">
             <label for="select"></label>
             <select id="select" name="Playlist Selected">
-            <option selected>Playlist 1</option>
-            <option>Playlist 2</option>
-            <option>Playlist 3</option>
             </select> 
             <br>
             <br>

@@ -39,9 +39,32 @@
             <h2> Your Playlists: </h2>
             <div class = "right">
                 <ol id = "playlistNames">
-                <li> <button onclick="AddPlay()"> Add Playlist </button></li>
+                <li> <button id = "adding" onclick="AddPlay()"> Add Playlist </button></li>
                 </ol>
             </div>
         </div>
+
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+              const right = document.getElementById('playlistNames');
+            
+              // Function to handle click on list items
+              function handleClick(event) {
+                // Check if the clicked element is a list item
+                if (event.target.tagName === 'LI') {
+                  // Get the text content of the clicked list item
+                  const clickedPlaylist = event.target.textContent;
+            
+                  // Redirect to the page for the clicked playlist item with the clicked item information in the query parameter
+                  // You can replace 'playlist_page.html' with your desired page
+                  window.location.href = `playlist.html?right=${encodeURIComponent(clickedPlaylist)}`;
+                }
+              }
+            
+              // Add event listener to the playlist
+              right.addEventListener('click', handleClick);
+            });
+            </script>
     </body>
 </html>

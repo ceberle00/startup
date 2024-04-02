@@ -1,5 +1,10 @@
 <html>
     <head>
+        <script>
+            window.onload = function() {
+                getQueryParam('right');
+            };
+        </script>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="playlist.css" />
         <link
@@ -8,6 +13,7 @@
             integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi"
             crossorigin="anonymous"
         />
+        <script src="index.js"></script>
     </head>
     <body>
         <div class = "buttons">
@@ -17,12 +23,8 @@
         <br>
         <br>
         <br>
-        <h2> Playlist Title: </h2>
-        <div class = "songs">
-            <ol>
-            <li> Song 1</li>
-            <li> Song 2 </li>
-            </ol>
-        </div>
+        <h2 id = "header"> Playlist Title </h2>
+        <ol id = "songNames">
+        </ol>
     </body>
 </html>
