@@ -94,8 +94,8 @@ function fillPlaylists()
 //hopefully works 
 function getSongSearch() 
 {
-  var getSong = document.getElementById('search');
-  var playListName = document.getElementById('select'); //hopefully right
+  var getSong = document.getElementById('search').value;
+  var playListName = document.getElementById('select').value; //hopefully right
   localStorage.setItem("PotentialSong", getSong);
   localStorage.setItem("playlistAdded", playListName);
   window.location.href = "voting.html";
@@ -105,7 +105,6 @@ function getSongSearch()
 
 function fillVoting() 
 {
-
+  document.getElementById("question").innerHTML = "Should the song " + localStorage.getItem("PotentialSong") + " be added to the playlist " + localStorage.getItem("playlistAdded") + "?";
 }
-
 
