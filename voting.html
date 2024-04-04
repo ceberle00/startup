@@ -25,9 +25,8 @@
         <br>
         <br>
          <h1 id = "question"> <b>Should the song (song name) be added to the playlist (playlist name)?</b></h1>
-
-        <div class = "voting">
-            <fieldset>
+         <div class = "voting">
+            <fieldset id = "voting2">
                 <legend>Voting!</legend>
                 <label for="Yes">Yes</label>
                 <input type="radio" id="Yes" name="varRadio" value="Yes" checked />
@@ -36,9 +35,9 @@
                 <label for="Don't care">Don't care</label>
                 <input type="radio" id="Don't care" name="varRadio" value="Don't care" />
             </fieldset> 
-        </div> 
+        </div>
         <div class = "submit">
-            <button type="submit"><a href = "mainpage.html"> Submit </a> </button>
+            <button type="submit" onclick = "getVotes()"> Submit </a> </button>
         </div>
     </body>   
 </html>

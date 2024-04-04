@@ -8,7 +8,9 @@
             integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi"
             crossorigin="anonymous"
         />
+        <script src="index.js"></script>
   </head>
+  <body onload="loadFriends()">
   <div class = "buttons">
     <button type="mainpage"><a href = "mainpage.html"> Home </a></button>
     <button type = "playlist"><a href = "playlist.html">Make new Playlist</a></button>
@@ -20,18 +22,17 @@
       <h3> <b> Make Friend Request:</b></h3>
       <div class = "Username">
         <label for="Username"> <b> Username of Friend: </b> </label>
-        <input type="text" name="Username" id="Username"> <button type="button"> Send </button>
+        <input type="text" name="Username" id="Username"> <button type="button" onclick = "friend()"> Send </button>
       </div>
     </div>
 
     <section>
         <h2>Friends: </h2>
-        <ul>
-          <li>Jane Doe</li>
-          <li>John Doe</li>
+        <ul id = "friends">
         </ul>
       </section>
 
     </div>
+  </body>
 
 </html>

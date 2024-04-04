@@ -27,6 +27,7 @@ h2, h3 {
     background-color: white;
     color: Black;
     text-align: center;
+    height: auto !important;
 }
 .Username {
     text-align: left;
@@ -45,11 +46,12 @@ ul {
     border-radius: 10px;
     border-style: solid;
     border-color: black;
-    height: 130px;
+    height: auto !important;
     width: 50%;
     background: rgb(138, 194, 114);
     padding: 5px;
 }
+
   
 ul li {
     border-radius: 10px;

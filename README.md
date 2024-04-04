@@ -57,3 +57,5 @@ For this deliverable I properly styled the application into its final appearance
 - Application elements - Used good contrast and whitespace, tried to put the buttons all in the same place and make the buttons stand out
 - Application text content - Consistent font
 - Application images - Made them surround the title
+
+## JAVASCRIPT Deliverable:

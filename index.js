@@ -2,7 +2,8 @@
 //next issue, need to pass in playlist info to be able to look at songs
 
 //MAINPAGE AND ADDPLAY HTML FILES
-const playlists = new Map();
+var playlists = new Map();
+
 function login() 
 {
   const userpass= document.querySelectorAll("#text-box"); 
@@ -13,8 +14,18 @@ function login()
     */ 
   window.location.href = "mainpage.html";
 }
+function setPlaylistMap() 
+{
+  var storedPlaylists = localStorage.getItem("playlists");
+  if (storedPlaylists) {
+    playlists = new Map(JSON.parse(storedPlaylists));
+  } else {
+    playlists = new Map();
+  }
+}
 function addToList() 
 {
+  setPlaylistMap();
   var myList = document.getElementById('playlistNames');
   var playlistTitles = JSON.parse(localStorage.getItem("PlaylistTitles")) || [];
   
@@ -23,38 +34,38 @@ function addToList()
     var titleNode = document.createTextNode(title);
     listItem.appendChild(titleNode);
     createPlaylist(titleNode);
+    setPlaylistMap();
     myList.appendChild(listItem.cloneNode(true));
   });
-  //listItem.appendChild(document.createTextNode(localStorage.getItem("PlaylistTitle")));
-  //myList.appendChild(listItem);
-}
-function getTitle() //changes the visual list part
-{
-  const value = document.getElementById('playlistTitle').value;
-  var playlistTitles = JSON.parse(localStorage.getItem("PlaylistTitles")) || [];
-  playlistTitles.push(value);
-  localStorage.setItem("PlaylistTitles", JSON.stringify(playlistTitles));
-  window.location.href = "mainpage.html";
 }
 function createPlaylist(value) 
 {
-  playlists.set(value, []);
+  if (!playlists.get(value)) {
+    playlists.set(value, []);
+  }
+  localStorage.setItem("playlists", JSON.stringify(Array.from(playlists.entries())));
 }
-
-function addSong(playlistName, song) 
+function getTitle() //changes the visual list part
 {
-  playlists.get(value).push(song);
+  setPlaylistMap();
+  const value = document.getElementById('playlistTitle').value;
+  var playlistTitles = JSON.parse(localStorage.getItem("PlaylistTitles")) || [];
+  playlistTitles.push(value);
+  createPlaylist(value);
+  localStorage.setItem("PlaylistTitles", JSON.stringify(playlistTitles));
+  window.location.href = "mainpage.html";
 }
 
 // PLAYLIST.HTML: Need to make the list and header change depending on what is clicked
 function getQueryParam(param) 
 {
+  setPlaylistMap();
   const urlParams = new URLSearchParams(window.location.search);
-  const newHead = urlParams.get(param);
+  var newHead = urlParams.get(param);
   if (newHead) {
     document.getElementById('header').textContent = newHead;
   }
-
+  console.log(newHead);
   var songs = playlists.get(newHead);
   var myList = document.getElementById('songNames');
   songs.forEach(function(title) {
@@ -79,6 +90,7 @@ then move to voting should pass in the info from the search service
 
 function fillPlaylists() 
 {
+  setPlaylistMap();
   var myPlaylistOptions = document.getElementById('select');
   var playlistTitles = JSON.parse(localStorage.getItem("PlaylistTitles")) || [];
   //for each create a new option?
@@ -94,9 +106,10 @@ function fillPlaylists()
 //hopefully works 
 function getSongSearch() 
 {
+  setPlaylistMap();
   var getSong = document.getElementById('search').value;
   var playListName = document.getElementById('select').value; //hopefully right
-  localStorage.setItem("PotentialSong", getSong);
+  localStorage.setItem("PotentialSong", JSON.stringify(getSong));
   localStorage.setItem("playlistAdded", playListName);
   window.location.href = "voting.html";
 }
@@ -108,3 +121,70 @@ function fillVoting()
   document.getElementById("question").innerHTML = "Should the song " + localStorage.getItem("PotentialSong") + " be added to the playlist " + localStorage.getItem("playlistAdded") + "?";
 }
 
+function getVotes() 
+{
+  var storedPlaylists = localStorage.getItem("playlists");
+  if (storedPlaylists) {
+    playlists = new Map(JSON.parse(storedPlaylists));
+  } else {
+    playlists = new Map();
+  }
+  var votingResults = document.getElementsByName('varRadio');
+  selectedValue = "";
+  noVotes = [];
+  yesVotes = [];
+  for (var i = 0; i < votingResults.length; i++) {
+    // Check if the radio button is checked
+    if (votingResults[i].checked) {
+      selectedValue = votingResults[i].value;
+      if (selectedValue === 'No') {
+        noVotes.push(1);
+      }
+      else {
+        yesVotes.push(1);
+      }
+    }
+  }
+  var playName = localStorage.getItem("playlistAdded");
+  var song = localStorage.getItem("PotentialSong");
+  if (yesVotes.length >= noVotes.length) 
+  {
+    var myList = playlists.get(playName) || [];
+    myList.push(song);
+    playlists.set(playName, myList);
+    localStorage.setItem("playlists", JSON.stringify(Array.from(playlists.entries())));
+  }
+  window.location.href = "mainpage.html";
+}
+
+//FRIEND REQUESTS
+
+function loadFriends() {
+  var friends = JSON.parse(localStorage.getItem("friendList")) || [];
+
+  friends.forEach(function (friendName) {
+    var listItem = document.createElement('li');
+    var titleNode = document.createTextNode(friendName);
+    listItem.appendChild(titleNode);
+    document.getElementById("friends").appendChild(listItem);
+  });
+}
+function friend() 
+{
+  var getUser = document.getElementById('Username').value;
+
+  var listItem = document.createElement('li');
+  var titleNode = document.createTextNode(getUser);
+  listItem.appendChild(titleNode);
+
+  document.getElementById('friends').appendChild(listItem);
+  document.getElementById('Username').value = '';
+
+  var friends = JSON.parse(localStorage.getItem("friendList")) || [];
+  if (!Array.isArray(friends)) {
+    friends = [];
+  }
+  friends.push(getUser); // Add the new friend to the list
+  localStorage.setItem("friendList", JSON.stringify(friends));
+
+}
