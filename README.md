@@ -58,4 +58,12 @@ For this deliverable I properly styled the application into its final appearance
 - Application text content - Consistent font
 - Application images - Made them surround the title
 
-## JAVASCRIPT Deliverable:
+## Javascript Deliverable:
+
+For this deliverable I added the code to make the functions work.
+
+- Made the lists changeable, so that we can add to them and it updates the html pages as well 
+- The information taken in one html page now moves to another one, so once we update a playlist it appears that way later
+- Local storage stores the username, password, voting results, friends, playlists, and songs, which can be accessed at any time
+- Made it so it takes in the votes (although for now it's just one) and uses it to determine whether a song should be added to a playlist
+- Made the playlists in the form of a map, with a string pointing to a list of strings
