@@ -1,16 +1,6 @@
 //might just do everything in here lol
 //next issue, need to pass in playlist info to be able to look at songs
 //SERVICE PART?
-const http = require('http');
-const server = http.createServer(function (req, res) {
-  res.writeHead(200, { 'Content-Type': 'text/html' });
-  res.write(`<h1>Hello Node.js! [${req.method}] ${req.url}</h1>`);
-  res.end();
-});
-
-server.listen(8080, () => {
-  console.log(`Web service listening on port 8080`);
-});
 //MAINPAGE AND ADDPLAY HTML FILES
 var playlists = new Map();
 
@@ -131,7 +121,28 @@ function fillVoting()
   document.getElementById("question").innerHTML = "Should the song " + localStorage.getItem("PotentialSong") + " be added to the playlist " + localStorage.getItem("playlistAdded") + "?";
 }
 
-function getVotes() 
+async function displayVotes() 
+{
+  try {
+    // Get the latest high scores from the service
+    const response = await fetch('/api/votes');
+    yesVotes, noVotes = await response.json(); //not sure if this is right
+
+    localStorage.setItem('yesVotes', JSON.stringify(yesVotes));
+    localStorage.setIten('noVotes', JSON.stringify(noVotes))
+  } catch {
+    // If there was an error then just use the last saved scores
+    const votesText = localStorage.getItem('yesVotes');
+    const noText = localStorage.getItem('noItem');
+    if (votesText && noText) {
+      yesVotes = JSON.parse(votesText);
+      noVotes = JSON.parse(noText);
+    }
+  }
+  getVotes(yesVotes, noVotes);
+
+}
+function getVotes(yesVotes, noVotes) 
 {
   var storedPlaylists = localStorage.getItem("playlists");
   if (storedPlaylists) {
@@ -139,7 +150,7 @@ function getVotes()
   } else {
     playlists = new Map();
   }
-  var votingResults = document.getElementsByName('varRadio');
+  /*var votingResults = document.getElementsByName('varRadio');
   selectedValue = "";
   noVotes = [];
   yesVotes = [];
@@ -154,7 +165,7 @@ function getVotes()
         yesVotes.push(1);
       }
     }
-  }
+  }*/
   var playName = localStorage.getItem("playlistAdded");
   var song = localStorage.getItem("PotentialSong");
   if (yesVotes.length >= noVotes.length) 
