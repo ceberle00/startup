@@ -120,17 +120,40 @@ function fillVoting()
 {
   document.getElementById("question").innerHTML = "Should the song " + localStorage.getItem("PotentialSong") + " be added to the playlist " + localStorage.getItem("playlistAdded") + "?";
 }
+async function addVotes() 
+{
+  try {
+    var votingResults = document.querySelector('input[name="varRadio"]:checked').value;
+    const response = await fetch('/api/votes', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body : JSON.stringify({ vote: votingResults })
+    });
+    const data = await response.json(); //problem, data not sending properly
 
+    console.log(data); // Log response from server (e.g., success message)
+    await displayVotes(); // Update voting results display after submitting vote
+  }
+  catch (error) {
+    console.error('Error submitting vote:', error);
+  }
+}
 async function displayVotes() 
 {
   try {
     // Get the latest high scores from the service
+
     const response = await fetch('/api/votes');
-    yesVotes, noVotes = await response.json(); //not sure if this is right
+    const { yesVotes, noVotes } = await response.json(); 
+    //document.getElementById("question").innerHTML = "Should the song " + yesVotes + " be added to the playlist " + noVotes + "?";
 
     localStorage.setItem('yesVotes', JSON.stringify(yesVotes));
-    localStorage.setIten('noVotes', JSON.stringify(noVotes))
-  } catch {
+    localStorage.setItem('noVotes', JSON.stringify(noVotes));
+    getVotes(yesVotes, noVotes);
+  } catch (error){
+    console.error('Error fetching and storing voting results:', error);
     // If there was an error then just use the last saved scores
     const votesText = localStorage.getItem('yesVotes');
     const noText = localStorage.getItem('noItem');
@@ -138,8 +161,8 @@ async function displayVotes()
       yesVotes = JSON.parse(votesText);
       noVotes = JSON.parse(noText);
     }
+    getVotes(yesVotes, noVotes);
   }
-  getVotes(yesVotes, noVotes);
 
 }
 function getVotes(yesVotes, noVotes) 
@@ -150,25 +173,11 @@ function getVotes(yesVotes, noVotes)
   } else {
     playlists = new Map();
   }
-  /*var votingResults = document.getElementsByName('varRadio');
-  selectedValue = "";
-  noVotes = [];
-  yesVotes = [];
-  for (var i = 0; i < votingResults.length; i++) {
-    // Check if the radio button is checked
-    if (votingResults[i].checked) {
-      selectedValue = votingResults[i].value;
-      if (selectedValue === 'No') {
-        noVotes.push(1);
-      }
-      else {
-        yesVotes.push(1);
-      }
-    }
-  }*/
-  var playName = localStorage.getItem("playlistAdded");
-  var song = localStorage.getItem("PotentialSong");
-  if (yesVotes.length >= noVotes.length) 
+  
+  const playName = localStorage.getItem("playlistAdded");
+  const song = localStorage.getItem("PotentialSong");
+  //document.getElementById("question").innerHTML = "Should the song " + yesVotes + " be added to the playlist " + noVotes + "?";
+  if (yesVotes > noVotes) 
   {
     var myList = playlists.get(playName) || [];
     myList.push(song);
@@ -177,6 +186,8 @@ function getVotes(yesVotes, noVotes)
   }
   window.location.href = "mainpage.html";
 }
+
+
 
 //FRIEND REQUESTS
 
