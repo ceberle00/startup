@@ -67,3 +67,8 @@ For this deliverable I added the code to make the functions work.
 - Local storage stores the username, password, voting results, friends, playlists, and songs, which can be accessed at any time
 - Made it so it takes in the votes (although for now it's just one) and uses it to determine whether a song should be added to a playlist
 - Made the playlists in the form of a map, with a string pointing to a list of strings
+
+## Service Deliverable
+- Got service working for getting and sorting votes
+- Can display votes for each category, although that will wait until the service works with multiple people
+- 
