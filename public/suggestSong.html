@@ -14,10 +14,10 @@
             integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi"
             crossorigin="anonymous"
         />
-        <script src="main.js"></script>
 
     </head>
     <body>
+        <script src="main.js"></script>
         <div class = "buttons">
             <button type="button"><a href="mainpage.html">Home</a></button>
             <button type="button"><a href="playlist.html"> Back to Playlists</a></button>
@@ -26,12 +26,13 @@
         <br>
         <h1> Suggest Song For Playlist </h1>
         <br>
+        
         <div class = "search">
             <label for="search"> Find Song: </label>
-            <input type="search" id="search" name="varSearch" />
+            <input type="text" id="search" name="varSearch">
         </div>
-            <br>
-            <h3> Which playlist would you like to add this song to?</p> </h3>
+        <br>
+        <h3> Which playlist would you like to add this song to?</p> </h3>
             
         <div class = "select">
             <label for="select"></label>
@@ -42,7 +43,6 @@
             <br>
             <button type="submit" onclick="getSongSearch()"> Move to Voting </button>
         </div>
-        </ul>
     </body>
 
 </html>

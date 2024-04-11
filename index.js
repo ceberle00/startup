@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 
 const port = process.argv.length > 2 ? process.argv[2] : 3000;
+//const { search } = require('../node_modules/@silent-killer/killer-spotify-searching');
 
 // JSON body parsing using built-in middleware
 app.use(express.json());
@@ -52,28 +53,22 @@ apiRouter.post('/votes', (req, res) => {
     }
 });
 
+//info for search function, honestly if too complicated might skip this 
+app.get('/api/search', async (req, res) => {
+    const { query } = req.query; // Get search query from URL query parameter
+    if (!query) {
+      return res.status(400).json({ error: 'Missing search query' });
+    }
+  
+    try {
+      const results = await search(query); // Search for songs using Spotify API
+      res.json(results); // Return search results as JSON
+    } catch (error) {
+      console.error('Error searching for songs:', error);
+      res.status(500).json({ error: 'Failed to search for songs' });
+    }
+});
+
 app.listen(port, () => {
     console.log(`Listening on port ${port}`);
 });
-
-//info for search function, honestly if too complicated might skip this 
-/*app.get('/api/song-suggestions', async (req, res) => {
-    const query = req.query.q;
-
-    if (!query) {
-        return res.status(400).json({ error: 'Search query is required' });
-    }
-
-    try {
-        // Fetch song suggestions from silent-killer/killer-spotify-searching API
-        const apiUrl = `https://silent-killer.herokuapp.com/spotify?q=${query}`;
-        const response = await fetch(apiUrl);
-        const data = await response.json();
-
-        // Return the list of song suggestions
-        res.json(data);
-    } catch (error) {
-        console.error('Error fetching song suggestions:', error);
-        res.status(500).json({ error: 'Failed to fetch song suggestions' });
-    }
-});*/
