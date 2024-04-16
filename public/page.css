@@ -27,7 +27,7 @@ body {
     border: 15px solid rgb(138, 194, 114); 
     padding: 20px; 
     border-radius: 10px;
-    height: 162px;
+    height: flex;
     text-align: left;
 }
 
