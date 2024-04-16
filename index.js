@@ -69,6 +69,7 @@ app.use(`/api`, apiRouter);
     res.status(404).send({ msg: 'Unknown' });
   });
   
+
   // secureApiRouter verifies credentials for endpoints
   var secureApiRouter = express.Router();
   apiRouter.use(secureApiRouter);
@@ -82,8 +83,31 @@ app.use(`/api`, apiRouter);
       res.status(401).send({ msg: 'Unauthorized' });
     }
   });
-  
 
+  secureApiRouter.get('/songs', async (req, res) => {
+    const songs = await DB.getSongs();
+    res.send(songs);
+  });
+  secureApiRouter.get('/playlist', async (req, res) => {
+    const play = await DB.getPlaylists();
+    res.send(play);
+  });
+  //submit song for votes
+  secureApiRouter.post('/songs', async(_req, res) => {
+    var song = req.body; 
+    await DB.addSong(song);
+    const songs = await DB.getSongs();
+    res.send(songs);
+  });
+
+  //add playlist to list
+  secureApiRouter.post('/playlist', async(_req, res) => {
+    var play = req.body; 
+    await DB.addPlay(play);
+    const playlist = await DB.getPlaylists();
+    res.send(playlist);
+  });
+  
 
 
 function setAuthCookie(res, authToken) 

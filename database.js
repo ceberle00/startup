@@ -12,6 +12,7 @@ const db = client.db('project');
 const userCollection = db.collection('user');
 const scoreCollection = db.collection('songs'); //not sure how collection works, maybe not right?
 const votes = db.collection('votes');
+const playCollection = db.collection('play');
 
 // This will asynchronously test the connection and exit the process if it fails
 (async function testConnection() {
@@ -44,9 +45,24 @@ async function createUser(email, password)
 
   return user;
 }
-
+async function addSong(song) {
+    scoreCollection.insertOne(song);
+}
+function getSongs() {
+  return scoreCollection;
+}
+async function addPlay(song) {
+  playCollection.insertOne(song);
+}
+function getPlaylists() {
+return playCollection;
+}
 module.exports = {
     getUser,
     getUserByToken,
     createUser,
+    getSongs, 
+    addSong,
+    getPlaylists,
+    addPlay,
   };
