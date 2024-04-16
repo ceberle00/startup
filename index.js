@@ -115,13 +115,13 @@ function countVotes(votes)
 
 }
 
-apiRouter.get('/votes', (_req, res) => {
+secureApiRouter.get('/votes', (_req, res) => {
     const { yesVotes, noVotes } = countVotes(votes);
     res.json({ yesVotes, noVotes });
 });
 
-apiRouter.post('/votes', (req, res) => {
-    var { vote } = req.body;
+secureApiRouter.post('/votes', (req, res) => {
+    var vote =  { ...req.body, ip: req.ip };
     if (vote) {
         votes.push(vote);
         res.json({ message: 'Vote submitted successfully' });
