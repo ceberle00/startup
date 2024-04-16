@@ -11,8 +11,9 @@ async function createUser() {
   loginOrCreate(`/api/auth/create`);
 }
 async function loginOrCreate(endpoint) {
-  const userName = document.querySelector('#text-box')[0];
-  const password = document.querySelector('#text-box')[1];
+  console.log('in login');
+  const userName = document.querySelector("#username").value;
+  const password = document.querySelector("#password").value;
   const response = await fetch(endpoint, {
     method: 'post',
     body: JSON.stringify({ email: userName, password: password }),
@@ -21,6 +22,8 @@ async function loginOrCreate(endpoint) {
     },
   });
 
+  console.log('after fetch');
+  //issue with creating new account specifically
   if (response.ok) {
     localStorage.setItem('userName', userName);
     window.location.href = 'mainpage.html';

@@ -20,27 +20,11 @@ app.set('trust proxy', true);
 var apiRouter = express.Router();
 app.use(`/api`, apiRouter);
 
-app.use((_req, res) => {
-    res.sendFile('index.html', { root: 'public' });
-});
-
 //this part mainly copied, hopefully fine lol
-apiRouter.post('/auth/create', async (req, res) => {
-    if (await DB.getUser(req.body.email)) {
-      res.status(409).send({ msg: 'Existing user' });
-    } else {
-      const user = await DB.createUser(req.body.email, req.body.password);
-  
-      setAuthCookie(res, user.token);
-  
-      res.send({
-        id: user._id,
-      });
-    }
-  });
   
   // GetAuth token for the provided credentials
   apiRouter.post('/auth/login', async (req, res) => {
+    console.log('in login');
     const user = await DB.getUser(req.body.email);
     if (user) {
       if (await bcrypt.compare(req.body.password, user.password)) {
@@ -51,7 +35,23 @@ apiRouter.post('/auth/create', async (req, res) => {
     }
     res.status(401).send({ msg: 'Unauthorized' });
   });
+
+  apiRouter.post('/auth/create', async (req, res) => {
+    console.log('in create');
+    if (await DB.getUser(req.body.email)) {
+      res.status(409).send({ msg: 'Existing user' });
+    } else {
+      console.log('Received email:', req.body.email);
+      console.log('Received password:', req.body.password);
+      const user = await DB.createUser(req.body.email, req.body.password);
   
+      setAuthCookie(res, user.token);
+  
+      res.send({
+        id: user._id,
+      });
+    }
+  });
   // DeleteAuth token if stored in cookie
   apiRouter.delete('/auth/logout', (_req, res) => {
     res.clearCookie(authCookieName);
@@ -148,4 +148,7 @@ app.get('/api/search', async (req, res) => {
 
 app.listen(port, () => {
     console.log(`Listening on port ${port}`);
+});
+app.use((_req, res) => {
+  res.sendFile('index.html', { root: 'public' });
 });

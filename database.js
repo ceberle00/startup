@@ -8,7 +8,7 @@ const config = require('./dbConfig.json');
 //if doesn't work, try link commented out above
 const url = `mongodb+srv://${config.userName}:${config.password}@${config.hostname}/?retryWrites=true&w=majority&appName=CS260Project`;
 const client = new MongoClient(url);
-const db = client.db('simon');
+const db = client.db('project');
 const userCollection = db.collection('user');
 const scoreCollection = db.collection('songs'); //not sure how collection works, maybe not right?
 const votes = db.collection('votes');
@@ -44,12 +44,9 @@ async function createUser(email, password)
 
   return user;
 }
-async function countVotes() 
-{
 
-}
 module.exports = {
     getUser,
     getUserByToken,
-    createUser
+    createUser,
   };
