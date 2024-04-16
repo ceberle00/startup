@@ -3,17 +3,60 @@
 //SERVICE PART?
 //MAINPAGE AND ADDPLAY HTML FILES
 var playlists = new Map();
+async function loginUser() {
+  loginOrCreate(`/api/auth/login`);
+}
 
-function login() 
+async function createUser() {
+  loginOrCreate(`/api/auth/create`);
+}
+async function loginOrCreate(endpoint) {
+  const userName = document.querySelector('#text-box')[0];
+  const password = document.querySelector('#text-box')[1];
+  const response = await fetch(endpoint, {
+    method: 'post',
+    body: JSON.stringify({ email: userName, password: password }),
+    headers: {
+      'Content-type': 'application/json; charset=UTF-8',
+    },
+  });
+
+  if (response.ok) {
+    localStorage.setItem('userName', userName);
+    window.location.href = 'mainpage.html';
+  } else {
+    const body = await response.json();
+    const modalEl = document.querySelector('#msgModal');
+    modalEl.querySelector('.modal-body').textContent = `⚠ Error: ${body.msg}`;
+    const msgModal = new bootstrap.Modal(modalEl, {});
+    msgModal.show();
+  }
+}
+async function getUser(email) {
+  let scores = [];
+  // See if we have a user with the given email.
+  const response = await fetch(`/api/user/${email}`);
+  if (response.status === 200) {
+    return response.json();
+  }
+
+  return null;
+}
+//not sure if using logout
+function logout() {
+  localStorage.removeItem('userName');
+  fetch(`/api/auth/logout`, {
+    method: 'delete',
+  }).then(() => (window.location.href = '/'));
+}
+/*function login() 
 {
   const userpass= document.querySelectorAll("#text-box"); 
   localStorage.setItem("userName", userpass[0]); 
   localStorage.setItem("password", userpass[1]);
-    /*
-    maybe need to change, make it so that it stores the info so you can have a correct/incorrect login?
-    */ 
+    
   window.location.href = "mainpage.html";
-}
+}*/
 function setPlaylistMap() 
 {
   var storedPlaylists = localStorage.getItem("playlists");

@@ -64,4 +64,5 @@ body {
     border:rgb(0, 0, 0);
     background-color: rgb(103, 176, 117);
     justify-content: space-evenly !important;
+    display: flex;
   }
