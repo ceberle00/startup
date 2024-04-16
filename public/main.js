@@ -50,26 +50,26 @@ function logout() {
     method: 'delete',
   }).then(() => (window.location.href = '/'));
 }
-/*function login() 
+
+async function setPlaylistMap() 
 {
-  const userpass= document.querySelectorAll("#text-box"); 
-  localStorage.setItem("userName", userpass[0]); 
-  localStorage.setItem("password", userpass[1]);
-    
-  window.location.href = "mainpage.html";
-}*/
-function setPlaylistMap() 
-{
-  var storedPlaylists = localStorage.getItem("playlists");
+  try {
+    const playlists = await DB.getPlaylists();
+    const playlistMap = new Map(playlists.map(playlist => [playlist.title, playlist.songs]));
+    localStorage.setItem("playlists", JSON.stringify(Array.from(playlistMap.entries())));
+  } catch (error) {
+    console.error('Error retrieving playlists:', error);
+  }
+  /*var storedPlaylists = localStorage.getItem("playlists");
   if (storedPlaylists) {
     playlists = new Map(JSON.parse(storedPlaylists));
   } else {
     playlists = new Map();
-  }
+  }*/
 }
-function addToList() 
+async function addToList() 
 {
-  setPlaylistMap();
+  await setPlaylistMap();
   var myList = document.getElementById('playlistNames');
   var playlistTitles = JSON.parse(localStorage.getItem("PlaylistTitles")) || [];
   
@@ -77,17 +77,32 @@ function addToList()
     var listItem = document.createElement('li');
     var titleNode = document.createTextNode(title);
     listItem.appendChild(titleNode);
-    createPlaylist(titleNode);
-    setPlaylistMap();
+    //setPlaylistmap()
     myList.appendChild(listItem.cloneNode(true));
+    createPlaylist(titleNode);
   });
 }
-function createPlaylist(value) 
+async function createPlaylist(value) 
 {
-  if (!playlists.get(value)) {
+  await setPlaylistMap(); // Make sure to await the async function
+
+    if (!playlists.has(value)) {
+        playlists.set(value, []); // Update local Map
+
+        try {
+            // Add playlist to database
+            const playlistData = { title: value, songs: [] };
+            await DB.addPlay(playlistData);
+        } catch (error) {
+            console.error('Error adding playlist to database:', error);
+        }
+
+        localStorage.setItem("playlists", JSON.stringify(Array.from(playlists.entries())));
+    }
+  /*if (!playlists.get(value)) {
     playlists.set(value, []);
   }
-  localStorage.setItem("playlists", JSON.stringify(Array.from(playlists.entries())));
+  localStorage.setItem("playlists", JSON.stringify(Array.from(playlists.entries())));*/
 }
 function getTitle() //changes the visual list part
 {
