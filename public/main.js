@@ -11,7 +11,6 @@ async function createUser() {
   loginOrCreate(`/api/auth/create`);
 }
 async function loginOrCreate(endpoint) {
-  console.log('in login');
   const userName = document.querySelector("#username").value;
   const password = document.querySelector("#password").value;
   const response = await fetch(endpoint, {
@@ -22,7 +21,6 @@ async function loginOrCreate(endpoint) {
     },
   });
 
-  console.log('after fetch');
   //issue with creating new account specifically
   if (response.ok) {
     localStorage.setItem('userName', userName);
