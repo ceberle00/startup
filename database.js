@@ -6,8 +6,7 @@ const uuid = require('uuid');
 const config = require('./dbConfig.json');
 
 //if doesn't work, try link commented out above
-const url = "mongodb+srv://camilleeberle:%40Cam148003428@cs260project.7xvqb.mongodb.net/?retryWrites=true&w=majority&appName=CS260Project"
-//const url = `mongodb+srv://${config.userName}:${config.password}@${config.hostname}/?retryWrites=true&w=majority&appName=CS260Project`;
+const url = `mongodb+srv://${config.userName}:${config.password}@${config.hostname}/?retryWrites=true&w=majority&appName=CS260Project`;
 const client = new MongoClient(url);
 const db = client.db('simon');
 const userCollection = db.collection('user');
