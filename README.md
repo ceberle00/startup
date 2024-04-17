@@ -71,4 +71,8 @@ For this deliverable I added the code to make the functions work.
 ## Service Deliverable
 - Got service working for getting and sorting votes
 - Can display votes for each category, although that will wait until the service works with multiple people
-- 
+## Login Deliverable
+- made it so you can login if the account exists or create a new account if it doesn't
+- logging out doesn't reset your data, still have the same playlists
+- error will appear if you try to login without creating an account or create an account with the same user/password as already exists
+- tried to make it so playlists are user specific? It seemed to work sometimes but otherwise not
