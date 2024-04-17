@@ -95,12 +95,12 @@ app.use(`/api`, apiRouter);
 
 
   //submit song for votes
-  /*secureApiRouter.post('/songs', async(_req, res) => {
-    var song = req.body; 
-    await DB.addSong(song);
+  secureApiRouter.post('/songs', async(_req, res) => {
+    const {playlist, song} = _req.body; 
+    await DB.addSongToPlaylist(playlist, song);
     const songs = await DB.getSongs();
     res.send(songs);
-  });*/
+  });
 
   //add playlist to list
   secureApiRouter.post('/playlist', async(req, res) => 
@@ -137,12 +137,12 @@ function countVotes(votes)
     var noVotes = 0;
     for (const vote of votes)
     {
-        if (vote === 'No') {
-            noVotes = noVotes + 1;
+        if (vote === "No") {
+          noVotes = noVotes + 1;
         }
         else
         {
-            yesVotes = yesVotes + 1;
+          yesVotes = yesVotes + 1;
         }
     }
     return { yesVotes, noVotes };
@@ -150,18 +150,23 @@ function countVotes(votes)
 }
 
 secureApiRouter.get('/votes', (_req, res) => {
-    const { yesVotes, noVotes } = countVotes(votes);
+    const voteValues = votes.map(vote => vote.vote);
+    const { yesVotes, noVotes } = countVotes(voteValues);
     res.json({ yesVotes, noVotes });
 });
 
 secureApiRouter.post('/votes', (req, res) => {
-    var vote =  { ...req.body, ip: req.ip };
-    if (vote) {
-        votes.push(vote);
-        res.json({ message: 'Vote submitted successfully' });
-    } else {
-        res.status(400).json({ error: 'Invalid vote data' });
-    }
+  votes = []; //for now, change for web socket
+  const { vote } = req.body;
+
+  if (!vote || (vote !== "Yes" && vote !== "No" && vote !== "Don't care")) {
+    return res.status(400).json({ error: 'Invalid vote data' });
+  }
+
+  const newVote = { vote, ip: req.ip };
+
+  votes.push(newVote);
+  res.json(votes);
 });
 
 //info for search function, honestly if too complicated might skip this 

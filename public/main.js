@@ -85,7 +85,7 @@ function logout() {
 async function addToList() 
 {
   //console.log("in add to list");
-  const email = localStorage.getItem('userName');
+  //const email = localStorage.getItem('userName');
   const response = await fetch(`/api/playlist`, {
       method: 'get',
       headers: {
@@ -97,7 +97,6 @@ async function addToList()
   //console.log('Response status text:', response.statusText);
   //console.log(response);
   if (response.ok) {
-    console.log("in if");
     const play = await response.json();
     var myList = document.getElementById('playlistNames');
 
@@ -221,10 +220,27 @@ then move to voting should pass in the info from the search service
 
 */
 
-function fillPlaylists() 
+async function fillPlaylists() 
 {
-  setPlaylistMap();
-  var myPlaylistOptions = document.getElementById('select');
+  const response = await fetch(`/api/playlist`, {
+    method: 'get',
+    headers: {
+        'Content-Type': 'application/json; charset=UTF-8'
+    }
+  });
+  if (response.ok) {
+    const play = await response.json();
+    var myList = document.getElementById('select');
+
+    //can I do this on this? idk
+    play.forEach(playlist => {
+      var listItem = document.createElement('option');
+      console.log(playlist.title);
+      listItem.textContent = playlist.title;
+      myList.appendChild(listItem.cloneNode(true));
+    });
+  }
+  /*var myPlaylistOptions = document.getElementById('select');
   var playlistTitles = JSON.parse(localStorage.getItem("PlaylistTitles")) || [];
   //for each create a new option?
   playlistTitles.forEach(function(title) 
@@ -233,13 +249,12 @@ function fillPlaylists()
     var titleNode = document.createTextNode(title);
     optionItem.appendChild(titleNode);
     myPlaylistOptions.appendChild(optionItem.cloneNode(true));
-  });
+  });*/
 }
 
 //hopefully works 
 function getSongSearch() 
 {
-  setPlaylistMap();
   var getSong = document.getElementById('search').value;
   var playListName = document.getElementById('select').value; //hopefully right
   localStorage.setItem("PotentialSong", JSON.stringify(getSong));
@@ -253,10 +268,12 @@ function fillVoting()
 {
   document.getElementById("question").innerHTML = "Should the song " + localStorage.getItem("PotentialSong") + " be added to the playlist " + localStorage.getItem("playlistAdded") + "?";
 }
+
 async function addVotes() 
 {
   try {
     var votingResults = document.querySelector('input[name="varRadio"]:checked').value;
+    console.log(votingResults); //here correct
     const response = await fetch('/api/votes', {
       method: 'POST',
       headers: {
@@ -265,7 +282,6 @@ async function addVotes()
       body : JSON.stringify({ vote: votingResults })
     });
     const data = await response.json(); //problem, data not sending properly
-
     console.log(data); // Log response from server (e.g., success message)
     await displayVotes(); // Update voting results display after submitting vote
   }
@@ -277,8 +293,14 @@ async function displayVotes()
 {
   try {
     // Get the latest high scores from the service
-
-    const response = await fetch('/api/votes');
+    console.log("In display");
+    const response = await fetch('/api/votes', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+    });
+    //console.log(response);
     const { yesVotes, noVotes } = await response.json(); 
     //document.getElementById("question").innerHTML = "Should the song " + yesVotes + " be added to the playlist " + noVotes + "?";
 
@@ -298,24 +320,25 @@ async function displayVotes()
   }
 
 }
-function getVotes(yesVotes, noVotes) 
+async function getVotes(yesVotes, noVotes) 
 {
-  var storedPlaylists = localStorage.getItem("playlists");
-  if (storedPlaylists) {
-    playlists = new Map(JSON.parse(storedPlaylists));
-  } else {
-    playlists = new Map();
-  }
+  console.log("In getVotes");
   
   const playName = localStorage.getItem("playlistAdded");
   const song = localStorage.getItem("PotentialSong");
-  //document.getElementById("question").innerHTML = "Should the song " + yesVotes + " be added to the playlist " + noVotes + "?";
+  console.log(yesVotes);
+  console.log(noVotes);
   if (yesVotes > noVotes) 
   {
-    var myList = playlists.get(playName) || [];
-    myList.push(song);
-    playlists.set(playName, myList);
-    localStorage.setItem("playlists", JSON.stringify(Array.from(playlists.entries())));
+    console.log("In if");
+    //const play = playlist.find(p => p.title === playName); //this is getting the playlist :), maybe don't need?
+    const addSong = await fetch('/api/songs', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body : JSON.stringify({ playlist : playName, song : song })
+    });
   }
   window.location.href = "mainpage.html";
 }

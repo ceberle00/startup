@@ -10,7 +10,6 @@ const url = `mongodb+srv://${config.userName}:${config.password}@${config.hostna
 const client = new MongoClient(url);
 const db = client.db('project');
 const userCollection = db.collection('user');
-const scoreCollection = db.collection('songs'); //not sure how collection works, maybe not right?
 const playlistCollection = db.collection('playlist');
 
 // This will asynchronously test the connection and exit the process if it fails
@@ -44,82 +43,6 @@ async function createUser(email, password)
 
   return user;
 }
-
-//change these, this will all get used based on the user
-/*async function addSong(song, username, playListName) 
-{
-  const user = await userCollection.findOne({ email: username });
-  const playlistIndex = user.playlists.findIndex(playlist => playlist.title === playListName);
-
-  if (playlistIndex === -1) {
-      console.log(`Playlist not found with name: ${playListName}`);
-      return; // Exit function if playlist not found
-  }
-
-  // Make a copy of the user's playlists array to modify
-  const updatedPlaylists = [...user.playlists];
-
-  // Add the song to the specified playlist
-  updatedPlaylists[playlistIndex].songs.push(song);
-
-  // Update the user document in the collection with the updated playlists
-  await userCollection.updateOne(
-      { _id: user._id }, // Filter by user's _id
-      { $set: { playlists: updatedPlaylists } } // Update playlists array
-  );
-
-}
-function getSongs(username, playListName) {
-  const user =  userCollection.findOne({email: username});
-  const playlistIndex = user.playlists.findIndex(playlist => playlist.title === playListName);
-  return user.playlists[playlistIndex].songs;
-}
-async function addPlay(playlist, userEmail) 
-{
-    //playCollection.insertOne(playlist);
-  try{
-    const userWanted = await userCollection.findOne({ email: userEmail });
-    if (!userWanted) {
-      console.log(`User ${userEmail} not found.`);
-      return;
-    }
-    if (!Array.isArray(userWanted.playlists)) {
-      console.log(`User ${userEmail} playlists not in expected format.`);
-      return;
-    }
-    const playlists = userWanted.playlists || []; // Ensure playlists is an array
-    playlists.push(playlist);
-    const updatedPlaylists = [...playlists, { title: playlist, songs: [] }]
-
-    updateResult = await userCollection.updateOne(
-      { _id: userWanted._id },
-      { $set: { playlists: updatedPlaylists } }
-    );
-    if (updateResult.modifiedCount !== 1) {
-      console.log(`Failed to update playlists for user ${userEmail}.`);
-      return ["teehee"]; // Return empty array if update operation fails
-    }
-    return updatedPlaylists;
-
-  } catch (error) {
-    console.error('Error adding playlist:', error);
-    throw error; // Rethrow error to propagate it up if needed
-  }
-}*/
-/*async function getPlaylists(userEmail) 
-{
-  try {
-    const userRecord = await userCollection.findOne({ email: userEmail });
-    if (!userRecord || !userRecord.playlists) {
-      console.log(`User ${userEmail} not found or playlists not available.`);
-      return []; // Return an empty array if playlists are not available
-    }
-    return userRecord.playlists;
-  } catch (error) {
-    console.error('Error retrieving playlists:', error);
-    return [];
-  }
-}*/
 async function addPlaylist(playlistTitle, email) {
   const user = await getUser(email);
 
@@ -159,10 +82,24 @@ async function getPlaylists() {
     throw new Error('Failed to fetch playlists');
   }
 }
+async function addSongToPlaylist(playlistTitle, song) {
+  const playlist = await playlistCollection.findOne({ title: playlistTitle });
+
+  if (!playlist) {
+    throw new Error(`Playlist ${playlistTitle} not found`);
+  }
+
+  // Update the playlist document to include the new song
+  await playlistCollection.updateOne(
+    { title: playlistTitle },
+    { $push: { songs: song } }
+  );
+}
 module.exports = {
     getUser,
     getUserByToken,
     createUser,
     getPlaylists,
     addPlaylist,
+    addSongToPlaylist,
   };
