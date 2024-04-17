@@ -72,7 +72,7 @@ app.use(`/api`, apiRouter);
 
   // secureApiRouter verifies credentials for endpoints
   var secureApiRouter = express.Router();
-  apiRouter.use(secureApiRouter);
+  apiRouter.use(secureApiRouter); //does this also use api?
   
   secureApiRouter.use(async (req, res, next) => {
     authToken = req.cookies[authCookieName];
@@ -85,13 +85,15 @@ app.use(`/api`, apiRouter);
   });
 
   secureApiRouter.get('/songs', async (req, res) => {
-    const songs = await DB.getSongs();
+    const songs = await DB.getSongs(req.query.songs);
     res.send(songs);
   });
   secureApiRouter.get('/playlist', async (req, res) => {
-    const play = await DB.getPlaylists();
+    const play = await DB.getPlaylists(req.query.email);
     res.send(play);
   });
+
+
   //submit song for votes
   secureApiRouter.post('/songs', async(_req, res) => {
     var song = req.body; 

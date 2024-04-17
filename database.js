@@ -70,8 +70,8 @@ async function addSong(song, username, playListName)
   );
 
 }
-function getSongs(user, playListName) {
-  const user =  userCollection.findOne({email: user});
+function getSongs(username, playListName) {
+  const user =  userCollection.findOne({email: username});
   const playlistIndex = user.playlists.findIndex(playlist => playlist.title === playListName);
   return user.playlists[playlistIndex].songs;
 }

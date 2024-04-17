@@ -51,12 +51,27 @@ function logout() {
   }).then(() => (window.location.href = '/'));
 }
 
+//maybe get rid of this function :)
 async function setPlaylistMap() 
 {
-  try {
-    const playlists = await DB.getPlaylists();
-    const playlistMap = new Map(playlists.map(playlist => [playlist.title, playlist.songs]));
-    localStorage.setItem("playlists", JSON.stringify(Array.from(playlistMap.entries())));
+  try 
+  {
+    const email = localStorage.getItem('userName');
+    const response = await fetch(`/api/playlist?email=${email}`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json; charset=UTF-8'
+        }
+    });
+    if (response.ok) {
+      const playlists = await response.json();
+      //maybe don't do the map anymore teehee
+      const playlistMap = new Map(playlists.map(playlist => [playlist.title, playlist.songs]));
+      //localStorage.setItem("playlists", JSON.stringify(Array.from(playlistMap.entries())));
+    } 
+    else {
+      console.log(":(")
+    }
   } catch (error) {
     console.error('Error retrieving playlists:', error);
   }
@@ -69,49 +84,73 @@ async function setPlaylistMap()
 }
 async function addToList() 
 {
-  await setPlaylistMap();
-  var myList = document.getElementById('playlistNames');
-  var playlistTitles = JSON.parse(localStorage.getItem("PlaylistTitles")) || [];
+  console.log("in add to list");
+  const email = localStorage.getItem('userName');
+  const response = await fetch(`/api/playlist?email=${email}`, {
+      method: 'GET',
+      headers: {
+          'Content-Type': 'application/json; charset=UTF-8'
+      }
+  });
+  if (response.ok) {
+    const play = await response.json();
+    console.log(play);
+    var myList = document.getElementById('playlistNames');
+
+    //can I do this on this? idk
+    play.forEach(playlist => {
+      var listItem = document.createElement('li');
+      console.log(playlist.title);
+      listItem.textContent = playlist.title;
+      myList.appendChild(listItem);
+    });
+  }
+  else {
+    console.log(":(");
+  }
   
-  playlistTitles.forEach(function(title) {
+  
+  /*playlistTitles.forEach(function(title) {
     var listItem = document.createElement('li');
     var titleNode = document.createTextNode(title);
     listItem.appendChild(titleNode);
     //setPlaylistmap()
     myList.appendChild(listItem.cloneNode(true));
-    createPlaylist(titleNode);
-  });
+    createPlaylist(titleNode); //this may not be necessary anymore
+  });*/
 }
 async function createPlaylist(value) 
 {
-  await setPlaylistMap(); // Make sure to await the async function
-
-  if (!playlists.has(value)) {
-      playlists.set(value, []); // Update local Map
+  //await setPlaylistMap(); // Make sure to await the async function
+  const playlist = await DB.getPlaylists(localStorage.getItem("userName")); //gets all the playlists in the thing
+  const playlistExists = playlists.some(playlist => playlist.title === value);
+  if (!playlistExists) {
+      //playlists.set(value, []); // Update local Map
 
       try {
         // Add playlist to database
         const playlistData = { title: value, songs: [] };
-        await DB.addPlay(playlistData);
+        await DB.addPlay(playlistData, localStorage.getItem("userName"));
       } catch (error) {
           console.error('Error adding playlist to database:', error);
       }
 
-      localStorage.setItem("playlists", JSON.stringify(Array.from(playlists.entries())));
+      //localStorage.setItem("playlists", JSON.stringify(Array.from(playlists.entries())));
   }
   /*if (!playlists.get(value)) {
     playlists.set(value, []);
   }
   localStorage.setItem("playlists", JSON.stringify(Array.from(playlists.entries())));*/
 }
-function getTitle() //changes the visual list part
+function getTitle()
 {
-  setPlaylistMap();
+  //setPlaylistMap();
   const value = document.getElementById('playlistTitle').value;
-  var playlistTitles = JSON.parse(localStorage.getItem("PlaylistTitles")) || [];
-  playlistTitles.push(value);
-  createPlaylist(value);
-  localStorage.setItem("PlaylistTitles", JSON.stringify(playlistTitles));
+  console.log(value);
+  //var playlistTitles = JSON.parse(localStorage.getItem("PlaylistTitles")) || [];
+  //playlistTitles.push(value);
+  createPlaylist(value); //change this so it adds to the database, then isn't necessary
+  //localStorage.setItem("PlaylistTitles", JSON.stringify(playlistTitles));
   window.location.href = "mainpage.html";
 }
 
