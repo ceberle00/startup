@@ -20,15 +20,14 @@ function peerProxy(httpServer) {
     connections.push(connection);
 
     // Forward messages to everyone except the sender
+
     ws.on('message', function message(data) {
         try {
             const message = JSON.parse(data);
-
             if (message.type === 'vote') {
             // Handle voting message
               const { songId, shouldAdd } = message;
               console.log(`Received vote for song ${songId}: ${shouldAdd}`);
-
               // Broadcast vote update to all connected clients
               wss.clients.forEach((client) => {
                 if (client !== ws && client.readyState === WebSocket.OPEN) {

@@ -282,7 +282,6 @@ async function getVotes(yesVotes, noVotes)
       },
       body : JSON.stringify({ playlist : playName, song : song })
     });
-    console.log("before send message");
     const message = JSON.stringify({ type: 'vote', song, shouldAdd });
     //console.log("before send message");
     sendMessageToWebSocketServer(message);
@@ -290,7 +289,6 @@ async function getVotes(yesVotes, noVotes)
   else 
   {
     const shouldAdd = "No";
-    console.log('teehee');
     const message = JSON.stringify({ type: 'vote', song, shouldAdd });
     sendMessageToWebSocketServer(message);
   }
@@ -306,7 +304,6 @@ function sendMessageToWebSocketServer(message) {
     const { song, shouldAdd } = receivedMessage;
     console.log('Received vote message - Song:', song, 'Should Add:', shouldAdd);
     socket.send(message); // Send message to WebSocket server
-    //onst {song, vote} = JSON.parse(message);
     updateVoteDisplay(song, shouldAdd);
   };
   socket.onerror = (error) => {
