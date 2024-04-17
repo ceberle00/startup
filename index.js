@@ -3,6 +3,7 @@ const app = express();
 const DB = require('./database.js');
 const cookieParser = require('cookie-parser');
 const bcrypt = require('bcrypt');
+const { peerProxy } = require('./peerProxy.js');
 
 const authCookieName = 'token';
 
@@ -185,9 +186,11 @@ app.get('/api/search', async (req, res) => {
     }
 });
 
-app.listen(port, () => {
-    console.log(`Listening on port ${port}`);
+const httpService = app.listen(port, () => {
+  console.log(`Listening on port ${port}`);
 });
 app.use((_req, res) => {
   res.sendFile('index.html', { root: 'public' });
 });
+
+peerProxy(httpService);

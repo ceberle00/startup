@@ -51,37 +51,6 @@ function logout() {
   }).then(() => (window.location.href = '/'));
 }
 
-//maybe get rid of this function :)
-/*async function setPlaylistMap() 
-{
-  try 
-  {
-    const email = localStorage.getItem('userName');
-    const response = await fetch(`/api/playlist?email=${email}`, {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json; charset=UTF-8'
-        }
-    });
-    if (response.ok) {
-      const playlists = await response.json();
-      //maybe don't do the map anymore teehee
-      const playlistMap = new Map(playlists.map(playlist => [playlist.title, playlist.songs]));
-      //localStorage.setItem("playlists", JSON.stringify(Array.from(playlistMap.entries())));
-    } 
-    else {
-      console.log(":(")
-    }
-  } catch (error) {
-    console.error('Error retrieving playlists:', error);
-  }
-  /*var storedPlaylists = localStorage.getItem("playlists");
-  if (storedPlaylists) {
-    playlists = new Map(JSON.parse(storedPlaylists));
-  } else {
-    playlists = new Map();
-  }
-}*/
 async function addToList() 
 {
   //console.log("in add to list");
