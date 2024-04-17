@@ -294,7 +294,34 @@ async function getVotes(yesVotes, noVotes)
   }
   //window.location.href = "mainpage.html";
 }
+let socket;
+
 function sendMessageToWebSocketServer(message) {
+  const protocol = window.location.protocol === 'http:' ? 'ws' : 'wss';
+  const socketUrl = `${protocol}://${window.location.host}/ws`;
+   // WebSocket server address
+  if (!socket || socket.readyState === WebSocket.CLOSED) {
+    socket = new WebSocket(socketUrl);
+    console.log(message);
+    socket.onopen = function () {
+      socket.send(message);
+    };
+
+    socket.onmessage = function (event) {
+      console.log("in onmessage");
+      const data = JSON.parse(event.data);
+      if (data.type === 'voteUpdate') {
+        console.log(data);
+        console.log(data.yesVotes);
+        updateVoteDisplay(data.yesVotes, data.noVotes);
+      }
+    };
+    socket.onerror = function (error) {
+      console.error('WebSocket error:', error);
+    };
+  }
+}
+/*function sendMessageToWebSocketServer(message) {
   const protocol = window.location.protocol === 'http:' ? 'ws' : 'wss';
   this.socket = new WebSocket(`${protocol}://${window.location.host}/ws`);
   //const socket = new WebSocket('ws://localhost:3000'); // Replace 'your-server-url' with your WebSocket server URL
@@ -311,13 +338,10 @@ function sendMessageToWebSocketServer(message) {
     console.error('WebSocket error:', error);
     // Handle error if needed
   };
-}
-function updateVoteDisplay(songId, shouldAdd) 
-{
+}*/
+function updateVoteDisplay(yesVotes, noVotes) {
   const voteList = document.getElementById('voteList');
-  const listItem = document.createElement('li');
-  listItem.textContent = `Vote for song ${songId}: ${shouldAdd}`;
-  voteList.appendChild(listItem);
+  voteList.innerHTML = `Yes Votes: ${yesVotes}, No Votes: ${noVotes}`;
 }
 //FRIEND REQUESTS
 

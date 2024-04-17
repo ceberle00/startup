@@ -14,6 +14,8 @@ function peerProxy(httpServer) {
 
   // Keep track of all the connections so we can forward messages
   let connections = [];
+  let yesVotes = 0;
+  let noVotes = 0;
 
   wss.on('connection', (ws) => {
     const connection = { id: uuid.v4(), alive: true, ws: ws };
@@ -21,33 +23,29 @@ function peerProxy(httpServer) {
 
     // Forward messages to everyone except the sender
 
-    ws.on('message', function message(data) {
-        try {
-            const message = JSON.parse(data);
-            if (message.type === 'vote') {
-            // Handle voting message
-              const { songId, shouldAdd } = message;
-              console.log(`Received vote for song ${songId}: ${shouldAdd}`);
-              // Broadcast vote update to all connected clients
-              wss.clients.forEach((client) => {
-                if (client !== ws && client.readyState === WebSocket.OPEN) {
-                client.send(JSON.stringify({ type: 'voteUpdate', songId, shouldAdd }));
-                }
-                });
-            }
-            else {
-              console.log("not vote");
-            }
-        }catch (error) {
-            console.error('Error parsing WebSocket message:', error);
-        }
-      /*connections.forEach((c) => {
-        if (c.id !== connection.id) {
-          c.ws.send(data);
-        }
-      });*/
-    });
+    ws.on('message', function incoming(message) {
+      try {
+        const { type, song, shouldAdd } = JSON.parse(message);
 
+        if (type === 'vote') {
+          if (shouldAdd === 'No') {
+            noVotes++;
+          } else if (shouldAdd === 'Yes' || shouldAdd === "Don't care") {
+            yesVotes++;
+          }
+
+          // Broadcast updated votes to all connected clients
+          wss.clients.forEach(function each(client) {
+            if (client.readyState === WebSocket.OPEN) {
+              client.send(JSON.stringify({ type: 'voteUpdate', yesVotes, noVotes }));
+            }
+          });
+        }
+      } catch (error) {
+        console.error('Error parsing WebSocket message:', error);
+      }
+    });
+    ws.send(JSON.stringify({ type: 'voteUpdate', yesVotes, noVotes }));
     // Remove the closed connection so we don't try to forward anymore
     ws.on('close', () => {
       const pos = connections.findIndex((o, i) => o.id === connection.id);
