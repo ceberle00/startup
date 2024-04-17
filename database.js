@@ -44,7 +44,6 @@ async function createUser(email, password)
   return user;
 }
 async function addPlaylist(playlistTitle, email) {
-  const result = await playlistCollection.deleteMany({});
   const user = await getUser(email);
 
   if (!user) {
