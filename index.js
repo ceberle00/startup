@@ -99,8 +99,8 @@ app.use(`/api`, apiRouter);
   secureApiRouter.post('/songs', async(_req, res) => {
     const {playlist, song} = _req.body; 
     await DB.addSongToPlaylist(playlist, song);
-    const songs = await DB.getSongs();
-    res.send(songs);
+    //const songs = await DB.getSongs();
+    res.send(song);
   });
 
   //add playlist to list
