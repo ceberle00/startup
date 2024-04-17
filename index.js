@@ -84,30 +84,38 @@ app.use(`/api`, apiRouter);
     }
   });
 
-  secureApiRouter.get('/songs', async (req, res) => {
+  /*secureApiRouter.get('/songs', async (req, res) => {
     const songs = await DB.getSongs(req.query.songs);
     res.send(songs);
-  });
+  });*/
   secureApiRouter.get('/playlist', async (req, res) => {
-    const play = await DB.getPlaylists(req.query.email);
+    const play = await DB.getPlaylists();
     res.send(play);
   });
 
 
   //submit song for votes
-  secureApiRouter.post('/songs', async(_req, res) => {
+  /*secureApiRouter.post('/songs', async(_req, res) => {
     var song = req.body; 
     await DB.addSong(song);
     const songs = await DB.getSongs();
     res.send(songs);
-  });
+  });*/
 
   //add playlist to list
-  secureApiRouter.post('/playlist', async(_req, res) => {
-    var play = req.body; 
-    await DB.addPlay(play);
-    const playlist = await DB.getPlaylists();
-    res.send(playlist);
+  secureApiRouter.post('/playlist', async(req, res) => 
+  {
+    try {
+      const { playlist, email } = req.body;
+      if (!email || !playlist) {
+        throw new Error('Email or playlist data missing in request');
+      }
+      const newPlaylist = await DB.addPlaylist(req.body.playlist, req.body.email);
+      res.json(newPlaylist);
+    } catch (error) {
+      console.error('Error adding playlist:', error);
+      res.status(500).send('Internal Server Error');
+    }
   });
   
 

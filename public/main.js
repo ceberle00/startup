@@ -52,7 +52,7 @@ function logout() {
 }
 
 //maybe get rid of this function :)
-async function setPlaylistMap() 
+/*async function setPlaylistMap() 
 {
   try 
   {
@@ -80,21 +80,25 @@ async function setPlaylistMap()
     playlists = new Map(JSON.parse(storedPlaylists));
   } else {
     playlists = new Map();
-  }*/
-}
+  }
+}*/
 async function addToList() 
 {
-  console.log("in add to list");
+  //console.log("in add to list");
   const email = localStorage.getItem('userName');
-  const response = await fetch(`/api/playlist?email=${email}`, {
-      method: 'GET',
+  const response = await fetch(`/api/playlist`, {
+      method: 'get',
       headers: {
           'Content-Type': 'application/json; charset=UTF-8'
       }
   });
+  console.log(response);
+  //console.log('Response status:', response.status);
+  //console.log('Response status text:', response.statusText);
+  //console.log(response);
   if (response.ok) {
+    console.log("in if");
     const play = await response.json();
-    console.log(play);
     var myList = document.getElementById('playlistNames');
 
     //can I do this on this? idk
@@ -106,73 +110,104 @@ async function addToList()
     });
   }
   else {
-    console.log(":(");
   }
   
-  
-  /*playlistTitles.forEach(function(title) {
-    var listItem = document.createElement('li');
-    var titleNode = document.createTextNode(title);
-    listItem.appendChild(titleNode);
-    //setPlaylistmap()
-    myList.appendChild(listItem.cloneNode(true));
-    createPlaylist(titleNode); //this may not be necessary anymore
-  });*/
 }
 async function createPlaylist(value) 
 {
-  //await setPlaylistMap(); // Make sure to await the async function
-  const playlist = await DB.getPlaylists(localStorage.getItem("userName")); //gets all the playlists in the thing
-  const playlistExists = playlists.some(playlist => playlist.title === value);
-  if (!playlistExists) {
-      //playlists.set(value, []); // Update local Map
-
-      try {
-        // Add playlist to database
-        const playlistData = { title: value, songs: [] };
-        await DB.addPlay(playlistData, localStorage.getItem("userName"));
-      } catch (error) {
-          console.error('Error adding playlist to database:', error);
+  console.log("Creating playlist:", value);
+  const email = localStorage.getItem('userName');
+  try {
+    const response = await fetch(`/api/playlist?email=${email}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json; charset=UTF-8'
       }
+    });
 
-      //localStorage.setItem("playlists", JSON.stringify(Array.from(playlists.entries())));
-  }
-  /*if (!playlists.get(value)) {
-    playlists.set(value, []);
-  }
-  localStorage.setItem("playlists", JSON.stringify(Array.from(playlists.entries())));*/
-}
-function getTitle()
-{
-  //setPlaylistMap();
-  const value = document.getElementById('playlistTitle').value;
-  console.log(value);
-  //var playlistTitles = JSON.parse(localStorage.getItem("PlaylistTitles")) || [];
-  //playlistTitles.push(value);
-  createPlaylist(value); //change this so it adds to the database, then isn't necessary
-  //localStorage.setItem("PlaylistTitles", JSON.stringify(playlistTitles));
-  window.location.href = "mainpage.html";
-}
+    const playlist = await response.json();
+    console.log("Existing playlists:", playlist);
 
+    const playlistExists = playlist.some(item => item.title === value);
+    if (!playlistExists) {
+      console.log("Playlist does not exist, creating...");
+      console.log(email);
+      console.log(value);
+      const addResponse = await fetch(`/api/playlist`, {
+        method: 'POST',
+        body: JSON.stringify({ email: email, playlist: value }),
+        headers: {
+          'Content-Type': 'application/json; charset=UTF-8'
+        }
+      });
+      console.log("after??");
+      console.log('addResponse:', addResponse);
+      if (!addResponse.ok) {
+        throw new Error(`Failed to add playlist (${addResponse.status} ${addResponse.statusText})`);
+      }
+      const contentType = addResponse.headers.get('content-type');
+      if (!contentType || !contentType.includes('application/json')) {
+        console.log(":(");
+        throw new Error('Unexpected response content type');
+      }
+      console.log(contentType);
+      const responseBody = await addResponse.text();
+      console.log(":)");
+      //const responseData = await addResponse.json();
+      console.log(responseBody);
+      console.log(":(");
+      
+    } else {
+      console.log("Playlist already exists.");
+    }
+  } catch (error) {
+    console.error('Error creating playlist:', error);
+  }
+}
+async function getTitle() {
+    const value = document.getElementById('playlistTitle').value;
+    console.log(value);
+    
+    try {
+      await createPlaylist(value); // Wait for createPlaylist to complete
+      // Other synchronous code that depends on createPlaylist results
+      // Redirect or perform additional actions here
+      window.location.href = "mainpage.html";
+    } catch (error) {
+      console.error('Error in getTitle:', error);
+      // Handle or log errors as needed
+    }
+}
 // PLAYLIST.HTML: Need to make the list and header change depending on what is clicked
-function getQueryParam(param) 
+async function getQueryParam(param) 
 {
-  setPlaylistMap();
+  const playlist = await fetch(`/api/playlist`, {
+    method: 'get',
+    headers: {
+        'Content-Type': 'application/json; charset=UTF-8'
+    }
+});
   const urlParams = new URLSearchParams(window.location.search);
   var newHead = urlParams.get(param);
+  console.log(playlist);
   if (newHead) {
     document.getElementById('header').textContent = newHead;
   }
-  console.log(newHead);
-  var songs = playlists.get(newHead);
-  var myList = document.getElementById('songNames');
-  songs.forEach(function(title) {
-    var listItem = document.createElement('li');
-    var titleNode = document.createTextNode(title);
-    listItem.appendChild(titleNode);
-    myList.appendChild(listItem.cloneNode(true));
-  });
-  //next set list items to be the items in the map
+  playlists = await playlist.json();
+  console.log(playlists);
+  const play = playlists.find(p => p.title === newHead);
+  if (play) {
+    const myList = document.getElementById('songNames');
+
+    // Loop through each song in the playlist and create list items
+    play.songs.forEach(song => {
+      const listItem = document.createElement('li');
+      const titleNode = document.createTextNode(song);
+      listItem.appendChild(titleNode);
+      myList.appendChild(listItem);
+    }); 
+    //probably right 
+  }
 }
 
 //ADDSONG.HTML
