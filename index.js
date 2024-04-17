@@ -4,6 +4,7 @@ const DB = require('./database.js');
 const cookieParser = require('cookie-parser');
 const bcrypt = require('bcrypt');
 const { peerProxy } = require('./peerProxy.js');
+const WebSocket = require('ws');
 
 const authCookieName = 'token';
 
@@ -131,7 +132,7 @@ function setAuthCookie(res, authToken)
 }
 //Next the parts for the actual services, probably used for getting votes first
 //move this function to database.js
-let votes = []
+/*let votes = []
 function countVotes(votes) 
 {
     var yesVotes = 0;
@@ -148,9 +149,38 @@ function countVotes(votes)
     }
     return { yesVotes, noVotes };
 
-}
+}*/
 
-secureApiRouter.get('/votes', (_req, res) => {
+let votingState = {
+  song: null,
+  playlist: null,
+  yesVotes: 0,
+  noVotes: 0
+};
+
+// API endpoint to get current voting state
+apiRouter.get('/api/votingState', (req, res) => {
+  res.json({
+    song: votingState.song,
+    playlist: votingState.playlist
+  });
+});
+
+apiRouter.post('/api/votes', (req, res) => {
+  const { vote } = req.body;
+  if (vote === 'yes') {
+    votingState.yesVotes++;
+  } else if (vote === 'no') {
+    votingState.noVotes++;
+  }
+  wss.clients.forEach(client => {
+    if (client.readyState === WebSocket.OPEN) {
+      client.send(JSON.stringify({ type: 'voteUpdate', yesVotes: votingState.yesVotes, noVotes: votingState.noVotes }));
+    }
+  });
+  res.json({ yesVotes: votingState.yesVotes, noVotes: votingState.noVotes });
+});
+/*secureApiRouter.get('/votes', (_req, res) => {
     const voteValues = votes.map(vote => vote.vote);
     const { yesVotes, noVotes } = countVotes(voteValues);
     res.json({ yesVotes, noVotes });
@@ -168,7 +198,7 @@ secureApiRouter.post('/votes', (req, res) => {
 
   votes.push(newVote);
   res.json(votes);
-});
+});*/
 
 //info for search function, honestly if too complicated might skip this 
 /*app.get('/api/search', async (req, res) => {
