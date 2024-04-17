@@ -21,11 +21,32 @@ function peerProxy(httpServer) {
 
     // Forward messages to everyone except the sender
     ws.on('message', function message(data) {
-      connections.forEach((c) => {
+        try {
+            const message = JSON.parse(data);
+
+            if (message.type === 'vote') {
+            // Handle voting message
+              const { songId, shouldAdd } = message;
+              console.log(`Received vote for song ${songId}: ${shouldAdd}`);
+
+              // Broadcast vote update to all connected clients
+              wss.clients.forEach((client) => {
+                if (client !== ws && client.readyState === WebSocket.OPEN) {
+                client.send(JSON.stringify({ type: 'voteUpdate', songId, shouldAdd }));
+                }
+                });
+            }
+            else {
+              console.log("not vote");
+            }
+        }catch (error) {
+            console.error('Error parsing WebSocket message:', error);
+        }
+      /*connections.forEach((c) => {
         if (c.id !== connection.id) {
           c.ws.send(data);
         }
-      });
+      });*/
     });
 
     // Remove the closed connection so we don't try to forward anymore

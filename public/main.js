@@ -242,7 +242,6 @@ async function addVotes()
 {
   try {
     var votingResults = document.querySelector('input[name="varRadio"]:checked').value;
-    console.log(votingResults); //here correct
     const response = await fetch('/api/votes', {
       method: 'POST',
       headers: {
@@ -250,56 +249,31 @@ async function addVotes()
       },
       body : JSON.stringify({ vote: votingResults })
     });
-    const data = await response.json(); //problem, data not sending properly
-    console.log(data); // Log response from server (e.g., success message)
-    await displayVotes(); // Update voting results display after submitting vote
-  }
-  catch (error) {
-    console.error('Error submitting vote:', error);
-  }
-}
-async function displayVotes() 
-{
-  try {
-    // Get the latest high scores from the service
-    console.log("In display");
-    const response = await fetch('/api/votes', {
+    const newResponse = await fetch('/api/votes', {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'
       },
     });
-    //console.log(response);
-    const { yesVotes, noVotes } = await response.json(); 
-    //document.getElementById("question").innerHTML = "Should the song " + yesVotes + " be added to the playlist " + noVotes + "?";
+    const { yesVotes, noVotes } = await newResponse.json(); 
 
-    localStorage.setItem('yesVotes', JSON.stringify(yesVotes));
-    localStorage.setItem('noVotes', JSON.stringify(noVotes));
-    getVotes(yesVotes, noVotes);
-  } catch (error){
-    console.error('Error fetching and storing voting results:', error);
-    // If there was an error then just use the last saved scores
-    const votesText = localStorage.getItem('yesVotes');
-    const noText = localStorage.getItem('noItem');
-    if (votesText && noText) {
-      yesVotes = JSON.parse(votesText);
-      noVotes = JSON.parse(noText);
-    }
-    getVotes(yesVotes, noVotes);
+    //localStorage.setItem('yesVotes', JSON.stringify(yesVotes));
+    //localStorage.setItem('noVotes', JSON.stringify(noVotes));
+    getVotes(yesVotes, noVotes); // Update voting results display after submitting vote
   }
-
+  catch (error) {
+    console.error('Error submitting vote:', error);
+  }
 }
 async function getVotes(yesVotes, noVotes) 
 {
-  console.log("In getVotes");
   
   const playName = localStorage.getItem("playlistAdded");
   const song = localStorage.getItem("PotentialSong");
-  console.log(yesVotes);
-  console.log(noVotes);
   if (yesVotes > noVotes) 
   {
-    console.log("In if");
+    const shouldAdd = "Yes";
+    console.log("before addSong?");
     //const play = playlist.find(p => p.title === playName); //this is getting the playlist :), maybe don't need?
     const addSong = await fetch('/api/songs', {
       method: 'POST',
@@ -308,12 +282,45 @@ async function getVotes(yesVotes, noVotes)
       },
       body : JSON.stringify({ playlist : playName, song : song })
     });
+    console.log("before send message");
+    const message = JSON.stringify({ type: 'vote', song, shouldAdd });
+    //console.log("before send message");
+    sendMessageToWebSocketServer(message);
   }
-  window.location.href = "mainpage.html";
+  else 
+  {
+    const shouldAdd = "No";
+    console.log('teehee');
+    const message = JSON.stringify({ type: 'vote', song, shouldAdd });
+    sendMessageToWebSocketServer(message);
+  }
+  //window.location.href = "mainpage.html";
 }
-
-
-
+function sendMessageToWebSocketServer(message) {
+  const protocol = window.location.protocol === 'http:' ? 'ws' : 'wss';
+  this.socket = new WebSocket(`${protocol}://${window.location.host}/ws`);
+  //const socket = new WebSocket('ws://localhost:3000'); // Replace 'your-server-url' with your WebSocket server URL
+  console.log("after creating websocket");
+  socket.onopen = () => {
+    const receivedMessage = JSON.parse(message);
+    const { song, shouldAdd } = receivedMessage;
+    console.log('Received vote message - Song:', song, 'Should Add:', shouldAdd);
+    socket.send(message); // Send message to WebSocket server
+    //onst {song, vote} = JSON.parse(message);
+    updateVoteDisplay(song, shouldAdd);
+  };
+  socket.onerror = (error) => {
+    console.error('WebSocket error:', error);
+    // Handle error if needed
+  };
+}
+function updateVoteDisplay(songId, shouldAdd) 
+{
+  const voteList = document.getElementById('voteList');
+  const listItem = document.createElement('li');
+  listItem.textContent = `Vote for song ${songId}: ${shouldAdd}`;
+  voteList.appendChild(listItem);
+}
 //FRIEND REQUESTS
 
 function loadFriends() {

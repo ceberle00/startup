@@ -99,8 +99,8 @@ app.use(`/api`, apiRouter);
   secureApiRouter.post('/songs', async(_req, res) => {
     const {playlist, song} = _req.body; 
     await DB.addSongToPlaylist(playlist, song);
-    const songs = await DB.getSongs();
-    res.send(songs);
+    //const songs = await DB.getSongs();
+    res.send(song);
   });
 
   //add playlist to list
@@ -171,7 +171,7 @@ secureApiRouter.post('/votes', (req, res) => {
 });
 
 //info for search function, honestly if too complicated might skip this 
-app.get('/api/search', async (req, res) => {
+/*app.get('/api/search', async (req, res) => {
     const { query } = req.query; // Get search query from URL query parameter
     if (!query) {
       return res.status(400).json({ error: 'Missing search query' });
@@ -184,7 +184,7 @@ app.get('/api/search', async (req, res) => {
       console.error('Error searching for songs:', error);
       res.status(500).json({ error: 'Failed to search for songs' });
     }
-});
+});*/
 
 const httpService = app.listen(port, () => {
   console.log(`Listening on port ${port}`);
