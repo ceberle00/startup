@@ -24,3 +24,11 @@ body {
 .submit {
     text-align: center;
 }
+.voteList {
+    text-align: center;
+    border-color: black;
+    background-color: rgb(138, 194, 114);
+    border: 15px solid rgb(1, 28, 1); /* Set border width, style, and color */
+    border-radius: 10px;
+    height: 100;
+}

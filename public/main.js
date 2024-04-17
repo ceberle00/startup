@@ -233,7 +233,7 @@ function getSongSearch()
 
 //VOTING.HTML
 
-/*function fillVoting() 
+function fillVoting() 
 {
   document.getElementById("question").innerHTML = "Should the song " + localStorage.getItem("PotentialSong") + " be added to the playlist " + localStorage.getItem("playlistAdded") + "?";
 }
@@ -304,6 +304,7 @@ function sendMessageToWebSocketServer(message) {
     const { song, shouldAdd } = receivedMessage;
     console.log('Received vote message - Song:', song, 'Should Add:', shouldAdd);
     socket.send(message); // Send message to WebSocket server
+    //onst {song, vote} = JSON.parse(message);
     updateVoteDisplay(song, shouldAdd);
   };
   socket.onerror = (error) => {
@@ -317,36 +318,6 @@ function updateVoteDisplay(songId, shouldAdd)
   const listItem = document.createElement('li');
   listItem.textContent = `Vote for song ${songId}: ${shouldAdd}`;
   voteList.appendChild(listItem);
-}*/
-
-async function fillVoting() {
-  try {
-    const response = await fetch('/api/votingState'); // Fetch current voting state from the server
-    const { song, playlist } = await response.json();
-    document.getElementById("question").innerHTML = `Should the song ${song} be added to the playlist ${playlist}?`;
-  } catch (error) {
-    console.error('Error filling voting:', error);
-  }
-}
-
-async function addVotes() {
-  try {
-    const votingResults = document.querySelector('input[name="varRadio"]:checked').value;
-    const response = await fetch('/api/votes', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ vote: votingResults })
-    });
-    const { yesVotes, noVotes } = await response.json();
-    updateVoteDisplay(yesVotes, noVotes);
-  } catch (error) {
-    console.error('Error submitting vote:', error);
-  }
-}
-
-function updateVoteDisplay(yesVotes, noVotes) {
-  const voteList = document.getElementById('voteList');
-  voteList.innerHTML = `Yes Votes: ${yesVotes}, No Votes: ${noVotes}`;
 }
 //FRIEND REQUESTS
 
