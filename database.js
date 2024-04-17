@@ -47,12 +47,33 @@ async function createUser(email, password)
 }
 
 //change these, this will all get used based on the user
-async function addSong(song, username) 
+async function addSong(song, username, playListName) 
 {
-  scoreCollection.insertOne(song);
+  const user = await userCollection.findOne({ email: username });
+  const playlistIndex = user.playlists.findIndex(playlist => playlist.title === playListName);
+
+  if (playlistIndex === -1) {
+      console.log(`Playlist not found with name: ${playListName}`);
+      return; // Exit function if playlist not found
+  }
+
+  // Make a copy of the user's playlists array to modify
+  const updatedPlaylists = [...user.playlists];
+
+  // Add the song to the specified playlist
+  updatedPlaylists[playlistIndex].songs.push(song);
+
+  // Update the user document in the collection with the updated playlists
+  await userCollection.updateOne(
+      { _id: user._id }, // Filter by user's _id
+      { $set: { playlists: updatedPlaylists } } // Update playlists array
+  );
+
 }
-function getSongs() {
-  return scoreCollection;
+function getSongs(user, playListName) {
+  const user =  userCollection.findOne({email: user});
+  const playlistIndex = user.playlists.findIndex(playlist => playlist.title === playListName);
+  return user.playlists[playlistIndex].songs;
 }
 async function addPlay(playlist, username) {
   const userWanted = userCollection.findOne({email : username});
@@ -64,8 +85,9 @@ async function addPlay(playlist, username) {
 );
   //playCollection.insertOne(song);
 }
-function getPlaylists() {
-return playCollection;
+function getPlaylists(user) 
+{
+  return userCollection.findOne({email: user}).playlists
 }
 module.exports = {
     getUser,
