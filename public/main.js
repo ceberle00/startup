@@ -86,19 +86,19 @@ async function createPlaylist(value)
 {
   await setPlaylistMap(); // Make sure to await the async function
 
-    if (!playlists.has(value)) {
-        playlists.set(value, []); // Update local Map
+  if (!playlists.has(value)) {
+      playlists.set(value, []); // Update local Map
 
-        try {
-            // Add playlist to database
-            const playlistData = { title: value, songs: [] };
-            await DB.addPlay(playlistData);
-        } catch (error) {
-            console.error('Error adding playlist to database:', error);
-        }
+      try {
+        // Add playlist to database
+        const playlistData = { title: value, songs: [] };
+        await DB.addPlay(playlistData);
+      } catch (error) {
+          console.error('Error adding playlist to database:', error);
+      }
 
-        localStorage.setItem("playlists", JSON.stringify(Array.from(playlists.entries())));
-    }
+      localStorage.setItem("playlists", JSON.stringify(Array.from(playlists.entries())));
+  }
   /*if (!playlists.get(value)) {
     playlists.set(value, []);
   }

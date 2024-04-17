@@ -4,7 +4,8 @@
     "bcrypt": "^5.1.1",
     "cookie-parser": "^1.4.6",
     "express": "^4.19.2",
-    "mongodb": "^6.5.0"
+    "mongodb": "^6.5.0",
+    "mongoose": "^8.3.2"
   },
   "name": "startup-1",
   "description": "Have you ever been about to go on a roadtrip with your friends, and you just finished making the perfect playlist for the trip when one of your friends adds the entire Hamilton soundtrack to it? Or a really niche mongolian throat singing song that doesn't fit the vibes at all? This application (name pending) allows for a group of people to vote on which songs are added to a playlist. One person will propose a song, and the group will vote on if it should be added or not. If it gets 50% or more of the votes, it'll be added to a playlist, preventing just one person from ruining the playlist with their weird taste.",

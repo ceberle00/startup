@@ -11,7 +11,6 @@ const client = new MongoClient(url);
 const db = client.db('project');
 const userCollection = db.collection('user');
 const scoreCollection = db.collection('songs'); //not sure how collection works, maybe not right?
-const votes = db.collection('votes');
 const playCollection = db.collection('play');
 
 // This will asynchronously test the connection and exit the process if it fails
@@ -40,19 +39,30 @@ async function createUser(email, password)
     email: email,
     password: passwordHash,
     token: uuid.v4(),
+    playlists : [] //hopefully right lol
   };
   await userCollection.insertOne(user);
 
   return user;
 }
-async function addSong(song) {
-    scoreCollection.insertOne(song);
+
+//change these, this will all get used based on the user
+async function addSong(song, username) 
+{
+  scoreCollection.insertOne(song);
 }
 function getSongs() {
   return scoreCollection;
 }
-async function addPlay(song) {
-  playCollection.insertOne(song);
+async function addPlay(playlist, username) {
+  const userWanted = userCollection.findOne({email : username});
+  const updatedPlaylists = [...userWanted.playlists];
+  updatedPlaylists.push({ title: playlist, songs: [] });
+  await userCollection.updateOne(
+    { _id: userWanted._id }, // Use the user's _id to identify the document
+    { $set: { playlists: updatedPlaylists } } // Set the updated playlists array
+);
+  //playCollection.insertOne(song);
 }
 function getPlaylists() {
 return playCollection;
