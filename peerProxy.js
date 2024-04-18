@@ -16,21 +16,20 @@ function peerProxy(httpServer) {
   let connections = [];
   let yesVotes = 0;
   let noVotes = 0;
+  let value = 0;
 
   wss.on('connection', (ws) => {
     const connection = { id: uuid.v4(), alive: true, ws: ws };
-    connections.push(connection);
-
-    // Forward messages to everyone except the sender
-
-    ws.on('message', function incoming(message) {
+    connections.push(connection); 
+    ws.on('message', (message) => {
       try {
         const { type, song, shouldAdd } = JSON.parse(message);
-
-        if (type === 'vote') {
+        //console.log(shouldAdd);
+        if (type === 'vote') 
+        {
           if (shouldAdd === 'No') {
             noVotes++;
-          } else if (shouldAdd === 'Yes' || shouldAdd === "Don't care") {
+          } else{
             yesVotes++;
           }
 

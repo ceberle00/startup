@@ -1,6 +1,9 @@
 //might just do everything in here lol
 //next issue, need to pass in playlist info to be able to look at songs
 //SERVICE PART?
+
+//const { peerProxy } = require("../peerProxy");
+
 //MAINPAGE AND ADDPLAY HTML FILES
 var playlists = new Map();
 async function loginUser() {
@@ -294,54 +297,31 @@ async function getVotes(yesVotes, noVotes)
   }
   //window.location.href = "mainpage.html";
 }
-let socket;
+//let socket;
 
-function sendMessageToWebSocketServer(message) {
-  const protocol = window.location.protocol === 'http:' ? 'ws' : 'wss';
-  const socketUrl = `${protocol}://${window.location.host}/ws`;
-   // WebSocket server address
-  if (!socket || socket.readyState === WebSocket.CLOSED) {
-    socket = new WebSocket(socketUrl);
-    console.log(message);
-    socket.onopen = function () {
-      socket.send(message);
-    };
-
-    socket.onmessage = function (event) {
-      console.log("in onmessage");
-      const data = JSON.parse(event.data);
-      if (data.type === 'voteUpdate') {
-        console.log(data);
-        console.log(data.yesVotes);
-        updateVoteDisplay(data.yesVotes, data.noVotes);
-      }
-    };
-    socket.onerror = function (error) {
-      console.error('WebSocket error:', error);
-    };
-  }
-}
-/*function sendMessageToWebSocketServer(message) {
+async function sendMessageToWebSocketServer(message) {
   const protocol = window.location.protocol === 'http:' ? 'ws' : 'wss';
   this.socket = new WebSocket(`${protocol}://${window.location.host}/ws`);
-  //const socket = new WebSocket('ws://localhost:3000'); // Replace 'your-server-url' with your WebSocket server URL
   console.log("after creating websocket");
   socket.onopen = () => {
+    console.log("in onopen");
     const receivedMessage = JSON.parse(message);
     const { song, shouldAdd } = receivedMessage;
-    console.log('Received vote message - Song:', song, 'Should Add:', shouldAdd);
+    console.log('Received vote message - Song:', song, 'vote3:', shouldAdd);
     socket.send(message); // Send message to WebSocket server
-    //onst {song, vote} = JSON.parse(message);
     updateVoteDisplay(song, shouldAdd);
   };
   socket.onerror = (error) => {
     console.error('WebSocket error:', error);
     // Handle error if needed
   };
-}*/
-function updateVoteDisplay(yesVotes, noVotes) {
+}
+function updateVoteDisplay(songId, shouldAdd) 
+{
   const voteList = document.getElementById('voteList');
-  voteList.innerHTML = `Yes Votes: ${yesVotes}, No Votes: ${noVotes}`;
+  const listItem = document.createElement('li');
+  listItem.textContent = `Vote for song ${songId}: ${shouldAdd}`;
+  voteList.appendChild(listItem);
 }
 //FRIEND REQUESTS
 
