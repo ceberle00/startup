@@ -238,6 +238,10 @@ function getSongSearch()
 
 function fillVoting() 
 {
+  let yes = 0;
+  let no = 0;
+  localStorage.setItem("yes", yes);
+  localStorage.setItem("no", no);
   document.getElementById("question").innerHTML = "Should the song " + localStorage.getItem("PotentialSong") + " be added to the playlist " + localStorage.getItem("playlistAdded") + "?";
 }
 
@@ -278,13 +282,13 @@ async function getVotes(yesVotes, noVotes)
     const shouldAdd = "Yes";
     console.log("before addSong?");
     //const play = playlist.find(p => p.title === playName); //this is getting the playlist :), maybe don't need?
-    const addSong = await fetch('/api/songs', {
+    /*const addSong = await fetch('/api/songs', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
       body : JSON.stringify({ playlist : playName, song : song })
-    });
+    });*/
     const message = JSON.stringify({ type: 'vote', song, shouldAdd });
     //console.log("before send message");
     sendMessageToWebSocketServer(message);
@@ -320,8 +324,39 @@ function updateVoteDisplay(songId, shouldAdd)
 {
   const voteList = document.getElementById('voteList');
   const listItem = document.createElement('li');
+  if (shouldAdd == 'Yes') {
+    let value = parseInt(localStorage.getItem("yes"));
+    console.log(value);
+    let newValue = value + 1;
+    console.log(newValue);
+    localStorage.setItem("yes", newValue);
+    console.log(localStorage.getItem("yes"));
+  }
+  else {
+    var value = parseInt((localStorage.getItem("no")));
+    value = value+ 1;
+    localStorage.setItem("no", value);
+    console.log(localStorage.getItem("no"));
+  }
   listItem.textContent = `Vote for song ${songId}: ${shouldAdd}`;
   voteList.appendChild(listItem);
+}
+async function actuallyAddPlay(){
+  const yes = parseInt(localStorage.getItem("yes"));
+  const no = parseInt(localStorage.getItem("no"));
+  if (yes >= no) {
+    const playName = localStorage.getItem("playlistAdded");
+    const song = localStorage.getItem("PotentialSong");
+    const addSong = await fetch('/api/songs', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body : JSON.stringify({ playlist : playName, song : song })
+  } );
+  }
+  window.location.href = "mainpage.html";
+
 }
 //FRIEND REQUESTS
 

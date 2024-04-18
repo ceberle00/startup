@@ -18,13 +18,13 @@
     </head>
     <body>
         <div class = "buttons">
-            <button type="button"><a href="mainpage.html">Home</a></button>
+            <button type="button" onclick = "actuallyAddPlay()">Home</a></button>
             <button type="button"> <a href="playlist.html">Playlists</a></button>
         </div>
         <br>
         <br>
         <br>
-         <h1 id = "question"> <b>Should the song (song name) be added to the playlist (playlist name)?</b></h1>
+         <h1 id = "question"> <b>Should the song (song name) be added to the playlist (playlist name)? (Once a user goes back to the mainpage the votes will be tallied)</b></h1>
          <div class = "voting">
             <fieldset id = "voting2">
                 <legend>Voting!</legend>
@@ -40,5 +40,6 @@
             <button type="submit" onclick = "addVotes()"> Submit </a> </button>
         </div>
         <ul id = "voteList"></ul>
+
     </body>   
 </html>
