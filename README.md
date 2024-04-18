@@ -80,4 +80,4 @@ For this deliverable I added the code to make the functions work.
 ## Websocket Deliverable
 - wasn't able to influence the search bar to suggest things
 - Got it so you can see votes in real time and those votes will change the playlists for everyone
-- there's a bit of a weird situation where 
+- there's a bit of a weird situation where if one user goes home but another doesn't they can accidently control the vote by being the only one there but whateves
